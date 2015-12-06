@@ -1,2 +1,7 @@
 obj/**
 bin/**
+*.o
+*.bin
+*.iso
+*~
+*.swp
