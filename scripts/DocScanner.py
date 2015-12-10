@@ -186,14 +186,15 @@ class TreeScanner:
 # Generates .md (Github flavored markdown) files with function/module docs
 def OutputDocs(path):
 	for modName in modules.keys():
-		with open(path + '/' + modName + '.md', 'w+') as f:
-			f.write('#Module ' + modName + '\n')
+		prettyName = modName[0].upper() + modName[1:]
+		with open(path + '/Module ' + prettyName + '.md', 'w+') as f:
+			f.write('#Module ' + prettyName + '\n')
 			f.write(modules[modName].brief + '\n')
 			f.write('##Detail\n')
 			f.write(modules[modName].detail + '\n')
-			f.write('##Functions\n')
 			f.write('##Calls\n')
 			f.write('##Called By\n')
+			f.write('##Functions\n')
 			for funcName in modules[modName].functions:
 				f.write('###' + funcName + '\n')
 				f.write(functions[funcName].brief + '\n')
