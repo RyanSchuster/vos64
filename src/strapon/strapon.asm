@@ -1,14 +1,14 @@
 %define MOD_STRAPON
 
 
-%include "strapon/strapon.h"
+%include "strapon/strapon.inc"
 
-%include "layout.h"
-%include "multiboot.h"
-%include "paging.h"
-%include "creg.h"
-%include "msr.h"
-%include "gdt.h"
+%include "layout.inc"
+%include "multiboot.inc"
+%include "paging.inc"
+%include "creg.inc"
+%include "msr.inc"
+%include "gdt.inc"
 
 
 

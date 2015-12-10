@@ -1,7 +1,7 @@
 %define MOD_LAYOUT
 
 
-%include "layout.h"
+%include "layout.inc"
 
 
 

@@ -33,7 +33,7 @@ $(BINARY) : $(OBJECTS) $(LINKSCRIPT)
 
 # Static memory map symbols
 
-$(OBJDIR)/layout.o : $(SRCDIR)/layout.asm $(INCDIR)/layout.h
+$(OBJDIR)/layout.o : $(SRCDIR)/layout.asm $(INCDIR)/layout.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
 
@@ -45,31 +45,31 @@ $(OBJDIR)/entry.o : $(SRCDIR)/entry.asm
 
 # Strapon bootloader stage
 
-$(OBJDIR)/strapon/strapon.o : $(SRCDIR)/strapon/strapon.asm $(INCDIR)/strapon/strapon.h $(INCDIR)/layout.h $(INCDIR)/multiboot.h $(INCDIR)/paging.h $(INCDIR)/creg.h $(INCDIR)/msr.h $(INCDIR)/gdt.h
+$(OBJDIR)/strapon/strapon.o : $(SRCDIR)/strapon/strapon.asm $(INCDIR)/strapon/strapon.inc $(INCDIR)/layout.inc $(INCDIR)/multiboot.inc $(INCDIR)/paging.inc $(INCDIR)/creg.inc $(INCDIR)/msr.inc $(INCDIR)/gdt.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
 
 # Debugging routines
 
-$(OBJDIR)/debug/debug.o : $(SRCDIR)/debug/debug.asm $(INCDIR)/debug/debug.h $(INCDIR)/debug/console.h $(INCDIR)/debug/serial.h $(INCDIR)/defs.h
+$(OBJDIR)/debug/debug.o : $(SRCDIR)/debug/debug.asm $(INCDIR)/debug/debug.inc $(INCDIR)/debug/console.inc $(INCDIR)/debug/serial.inc $(INCDIR)/defs.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
-$(OBJDIR)/debug/console.o : $(SRCDIR)/debug/console.asm $(INCDIR)/debug/console.h $(INCDIR)/defs.h
+$(OBJDIR)/debug/console.o : $(SRCDIR)/debug/console.asm $(INCDIR)/debug/console.inc $(INCDIR)/defs.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
-$(OBJDIR)/debug/serial.o : $(SRCDIR)/debug/serial.asm $(INCDIR)/debug/serial.h
+$(OBJDIR)/debug/serial.o : $(SRCDIR)/debug/serial.asm $(INCDIR)/debug/serial.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
 
 # Generic library routines
 
-$(OBJDIR)/lib/bitmap.o : $(SRCDIR)/lib/bitmap.asm $(INCDIR)/lib/bitmap.h
+$(OBJDIR)/lib/bitmap.o : $(SRCDIR)/lib/bitmap.asm $(INCDIR)/lib/bitmap.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
 
 # Hardware Abstraction Layer
 
-obj/hal/pmem.o : $(SRCDIR)/hal/pmem.asm $(INCDIR)/hal/pmem.h
+obj/hal/pmem.o : $(SRCDIR)/hal/pmem.asm $(INCDIR)/hal/pmem.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
 

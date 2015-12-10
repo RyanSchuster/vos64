@@ -1,12 +1,12 @@
 %define MOD_PMEM
 
 
-%include "hal/pmem.h"
+%include "hal/pmem.inc"
 
-%include "lib/bitmap.h"
-%include "multiboot.h"
+%include "lib/bitmap.inc"
+%include "multiboot.inc"
 
-%include "debug/debug.h"
+%include "debug/debug.inc"
 
 
 

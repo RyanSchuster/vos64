@@ -1,12 +1,12 @@
 %define MOD_BITMAP
 
 
-%include "lib/bitmap.h"
+%include "lib/bitmap.inc"
 
-%include "defs.h"
+%include "defs.inc"
 
 %ifdef TEST_BITMAP
-%include "debug/debug.h"
+%include "debug/debug.inc"
 %endif ;TEST_BITMAP
 
 

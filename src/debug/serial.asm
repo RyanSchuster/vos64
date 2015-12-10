@@ -1,7 +1,7 @@
 %define MOD_SERIAL
 
 
-%include "debug/serial.h"
+%include "debug/serial.inc"
 
 
 

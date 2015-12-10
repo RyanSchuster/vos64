@@ -1,14 +1,14 @@
 %define MOD_ENTRY
 
 
-%include "defs.h"
-%include "layout.h"
-%include "debug/debug.h"
+%include "defs.inc"
+%include "layout.inc"
+%include "debug/debug.inc"
 
-%include "hal/pmem.h"
+%include "hal/pmem.inc"
 
 %ifdef TEST_BITMAP
-%include "lib/bitmap.h"
+%include "lib/bitmap.inc"
 %endif ;TEST_BITMAP
 
 

@@ -1,9 +1,9 @@
 %define MOD_CONSOLE
 
 
-%include "debug/console.h"
+%include "debug/console.inc"
 
-%include "defs.h"
+%include "defs.inc"
 
 
 ;------------------------------------------------------------------------------

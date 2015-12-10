@@ -1,12 +1,12 @@
 %define MOD_DEBUG
 
 
-%include "debug/debug.h"
+%include "debug/debug.inc"
 
-%include "debug/console.h"
-%include "debug/serial.h"
+%include "debug/console.inc"
+%include "debug/serial.inc"
 
-%include "defs.h"
+%include "defs.inc"
 
 
 
