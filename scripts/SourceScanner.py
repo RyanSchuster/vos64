@@ -5,6 +5,7 @@
 
 
 import os
+import re
 
 class SourceScanner:
 	CALLBACK_NEWFILE = "newfile"	# started scanning a new file
@@ -53,7 +54,7 @@ class SourceScanner:
 		if label.find('"') >= 0 or label.find("'") >= 0:
 			label = ''
 		code = line[labelEnd:commentStart].lstrip().rstrip()
-		comment = line[commentStart:].lstrip().rstrip()
+		comment = line[commentStart + 1:].lstrip().rstrip()
 		preassembler = ''
 		if line[0] == '%':
 			code = ''
@@ -61,6 +62,10 @@ class SourceScanner:
 
 		# TODO: sections?
 		section = ''
+		words = re.findall(r"[\w']+", code)
+		if len(words) > 0 and (words[0] == 'section' or 'exec' in words[2:]):
+			code = ''
+			section = words[1]
 
 		# call appropriate callbacks
 		if label:
