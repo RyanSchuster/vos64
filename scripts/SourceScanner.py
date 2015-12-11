@@ -19,7 +19,7 @@ class SourceScanner:
 
 	# newfile callback:	0, filepath
 	# label callback:	line, labelname
-	# section callback:	line, sectionname
+	# section callback:	line, [sectionname, attr, attr, ...]
 	# code callback:	line, codeline
 	# comment callback:	line, commenttext
 
@@ -63,9 +63,9 @@ class SourceScanner:
 		# TODO: sections?
 		section = ''
 		words = re.findall(r"[\w']+", code)
-		if len(words) > 0 and (words[0] == 'section' or 'exec' in words[2:]):
+		if len(words) > 0 and words[0] == 'section':
 			code = ''
-			section = words[1]
+			section = words[1:]
 
 		# call appropriate callbacks
 		if label:
@@ -88,7 +88,7 @@ class SourceScanner:
 	def ScanDir(self, rootpath):
 		for dirname, subdirlist, filelist in os.walk(rootpath):
 			for filename in filelist:
-				if filename[-4:] != '.asm' and filename[-2:] != '.h':
+				if filename[-4:] != '.asm' and filename[-4:] != '.inc':
 					continue
 				path = dirname + '/' + filename
 				self.ScanFile(path)

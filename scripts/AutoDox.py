@@ -113,11 +113,13 @@ class DocScanner:
 			self.modname = words[1]
 			self.state = self.STATE_MOD
 			self.substate = self.SUBSTATE_NONE
+			modules[self.modname] = Module()
 		elif words[0] == 'function:':
 			self.funcname = words[1]
 			self.state = self.STATE_FUNC
 			self.substate = self.SUBSTATE_NONE
 			modules[self.modname].AddFunction(self.funcname)
+			functions[self.funcname].SetModule(self.modname)
 
 		# Handle switching between microstates
 		if self.state == self.STATE_MOD:
@@ -159,6 +161,7 @@ class DocScanner:
 # Scans labels and call instructions to gather dependency information
 class TreeScanner:
 	STATE_NONE = 0
+	STATE_CODE = 1
 
 	def __init__(self, sourceScanner):
 		sourceScanner.SetCallback('newfile', self.CBNewFile)
@@ -167,6 +170,7 @@ class TreeScanner:
 		sourceScanner.SetCallback('code', self.CBCode)
 
 		self.state = self.STATE_NONE
+		self.funcname = ''
 
 	def CBNewFile(self, dummy, pathname):
 		if self.state != self.STATE_NONE:
@@ -174,41 +178,109 @@ class TreeScanner:
 		self.state = self.STATE_NONE
 
 	def CBLabel(self, linenum, label):
-		pass
+		if self.state == self.STATE_CODE and label[0] != '.':
+			self.funcname = label
 
 	def CBSection(self, linenum, section):
-		pass
+		if section[0] == '.text' or section[0] == 'text' or 'exec' in section[1:]:
+			self.state = self.STATE_CODE
+		else:
+			self.state = self.STATE_NONE
 
 	def CBCode(self, linenum, codeline):
-		pass
+		if self.state == self.STATE_CODE:
+			words = codeline.split()
+			if len(words) >= 2 and words[0] == 'call':
+				functions[self.funcname].AddCallee(words[1])
+				functions[words[1]].AddCaller(self.funcname)
 
 
 # Generates .md (Github flavored markdown) files with function/module docs
 def OutputDocs(path):
-	for modName in modules.keys():
-		prettyName = modName[0].upper() + modName[1:]
-		with open(path + '/Module ' + prettyName + '.md', 'w+') as f:
-			f.write('#Module ' + prettyName + '\n')
+	# Connect module dependencies
+	for funcName in functions.keys():
+		modName = functions[funcName].module
+		for calleeFunc in functions[funcName].callees:
+			calleeModName = functions[calleeFunc].module
+			modules[modName].AddCallee(calleeModName)
+			modules[calleeModName].AddCaller(modName)
+
+	# Write module index wiki page
+	with open(path + '/Module-Index.md', 'w+') as f:
+		for modName in modules.keys():
+			f.write('#Module ' + modName + '\n')
 			f.write(modules[modName].brief + '\n')
 			f.write('##Detail\n')
 			f.write(modules[modName].detail + '\n')
-			f.write('##Calls\n')
-			f.write('##Called By\n')
 			f.write('##Functions\n')
 			for funcName in modules[modName].functions:
-				f.write('###' + funcName + '\n')
+				f.write('* ' + funcName + ' - ')
 				f.write(functions[funcName].brief + '\n')
-				f.write('####Pass\n')
-				f.write(functions[funcName].inputs + '\n')
-				f.write('####Return\n')
-				f.write(functions[funcName].outputs + '\n')
-				f.write('####Side Effects\n')
-				f.write(functions[funcName].sideEffects + '\n')
-				f.write('####Detail\n')
-				f.write(functions[funcName].detail + '\n')
-				f.write('####Calls\n')
-				f.write('####Called By\n')
-				f.write('---\n')
+			f.write('\n\n')
+			f.write('##Calls\n')
+			for modName in modules[modName].callees:
+				f.write('* ' + modName + ' - ')
+				f.write(modules[modName].brief + '\n')
+			f.write('\n\n')
+			f.write('##Called By\n')
+			for modName in modules[modName].callers:
+				f.write('* ' + modName + ' - ')
+				f.write(modules[modName].brief + '\n')
+			f.write('\n\n')
+
+	# Write function index wiki page
+	with open(path + '/Function-Index.md', 'w+') as f:
+		for funcName in functions.keys():
+			f.write('#Function ' + funcName + '\n')
+			f.write(functions[funcName].brief + '\n\n')
+			f.write('Part of Module ' + functions[funcName].module + '\n')
+			f.write('##Pass\n')
+			f.write(functions[funcName].inputs + '\n')
+			f.write('##Return\n')
+			f.write(functions[funcName].outputs + '\n')
+			f.write('##Side Effects\n')
+			f.write(functions[funcName].sideEffects + '\n')
+			f.write('##Detail\n')
+			f.write(functions[funcName].detail + '\n')
+			f.write('##Calls\n')
+			for calleeName in functions[funcName].callees:
+				f.write('* ' + calleeName + ' - ')
+				f.write(functions[calleeName].brief + '\n')
+			f.write('\n\n')
+			f.write('##Called By\n')
+			for callerName in functions[funcName].callers:
+				f.write('* ' + callerName + ' - ')
+				f.write(functions[callerName].brief + '\n')
+			f.write('\n\n')
+
+	#for modName in modules.keys():
+	#	prettyName = modName[0].upper() + modName[1:]
+	#	with open(path + '/Module ' + prettyName + '.md', 'w+') as f:
+	#		f.write('#Module ' + prettyName + '\n')
+	#		f.write(modules[modName].brief + '\n')
+	#		f.write('##Detail\n')
+	#		f.write(modules[modName].detail + '\n')
+	#		f.write('##Calls\n')
+	#		f.write('##Called By\n')
+	#		f.write('##Functions\n')
+	#		for funcName in modules[modName].functions:
+	#			f.write('###' + funcName + '\n')
+	#			f.write(functions[funcName].brief + '\n')
+	#			f.write('####Pass\n')
+	#			f.write(functions[funcName].inputs + '\n')
+	#			f.write('####Return\n')
+	#			f.write(functions[funcName].outputs + '\n')
+	#			f.write('####Side Effects\n')
+	#			f.write(functions[funcName].sideEffects + '\n')
+	#			f.write('####Detail\n')
+	#			f.write(functions[funcName].detail + '\n')
+	#			f.write('####Calls\n')
+	#			for calleeName in functions[funcName].callees:
+	#				f.write('*' + calleeName + '\n')
+	#			f.write('####Called By\n')
+	#			for callerName in functions[funcName].callers:
+	#				f.write('*' + callerName + '\n')
+	#			f.write('---\n')
 
 
 # Generates a .dot file for generating a callgraph with graphviz
