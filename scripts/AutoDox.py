@@ -4,7 +4,7 @@ import collections
 # Represents a code module
 class Module:
 	def __init__(self):
-		self.name = 'No Module'
+		self.name = 'No_Module'
 		self.brief = ''
 		self.detail = ''
 		self.callees = set()
@@ -58,7 +58,7 @@ class Module:
 class Function:
 	def __init__(self):
 		self.name = ''
-		self.module = 'No Module'
+		self.module = 'No_Module'
 		self.brief = ''
 		self.detail = ''
 		self.inputs = ''
@@ -193,6 +193,9 @@ def MakeRegList(section):
 def MakeModulePage():
 	text = ''
 
+	# Embed callgraph image
+	text = text + '![Sexy Callgraph Image](callgraph.png)\n\n'
+
 	# Make table of contents
 	text = text + '# Contents\n\n'
 	for modName, module in modules.items():
@@ -228,6 +231,9 @@ def MakeModulePage():
 
 def MakeFunctionPage():
 	text = ''
+
+	# Embed callgraph image
+	text = text + '![Sexy Callgraph Image](callgraph.png)\n\n'
 
 	# Make table of contents
 	text = text + '# Contents\n\n'
@@ -270,6 +276,33 @@ def MakeFunctionPage():
 
 	return text
 
+def MakeCallgraphDotfile():
+	text = 'digraph VOSCallgraph {\n'
+
+	# Separate functions into clusters by modules
+	for modName, module in modules.items():
+		if 'Debug' in modName:
+			continue
+		text = text + '\tsubgraph cluster_' + modName + ' {\n'
+		text = text + '\t\tnode [style = filled, color = white];\n'
+		text = text + '\t\tstyle = filled;\n'
+		text = text + '\t\tcolor = grey;\n'
+		text = text + '\t\tlabel = "Module ' + modName + '";\n'
+		for funcName in module.GetFunctions():
+			text = text + '\t\t' + funcName + ';\n'
+		text = text + '\t}\n'
+
+	# Connect functions by dependency
+	for funcName, function in functions.items():
+		for calleeName in function.GetCallees():
+			if ('Debug' in funcName) or ('Debug' in calleeName):
+				continue
+			text = text + '\t' + funcName + ' -> ' + calleeName + ';\n'
+
+	text = text + '}\n'
+
+	return text
+
 
 # Scans comments to gather documentation information
 class DocScanner:
@@ -290,7 +323,7 @@ class DocScanner:
 		self.state = self.STATE_NONE
 		self.substate = self.SUBSTATE_NONE
 		self.filename = ''
-		self.modname = 'No Module'
+		self.modname = 'No_Module'
 		self.funcname = ''
 
 	def CBNewFile(self, dummy, pathname):
@@ -416,12 +449,16 @@ def OutputDocs(path):
 			modules[calleeModName].AddCaller(modName)
 
 	# Write module index wiki page
-	with open(path + '/Module-Index.md', 'w+') as f:
+	with open(path + 'vos64.wiki/Module-Index.md', 'w+') as f:
 		f.write(MakeModulePage())
 
 	# Write function index wiki page
-	with open(path + '/Function-Index.md', 'w+') as f:
+	with open(path + 'vos64.wiki/Function-Index.md', 'w+') as f:
 		f.write(MakeFunctionPage())
+
+	# Write callgraph dotfile for graphviz
+	with open(path + 'callgraph.dot', 'w+') as f:
+		f.write(MakeCallgraphDotfile())
 
 
 # Generates a .dot file for generating a callgraph with graphviz

@@ -109,3 +109,4 @@ review :
 .PHONY : dox
 dox :
 	scripts/ScanTree.py
+	dot -Tpng scripts/doc/callgraph.dot -o scripts/doc/vos64.wiki/callgraph.png

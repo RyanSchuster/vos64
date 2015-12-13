@@ -20,6 +20,6 @@ sourceScanner.ScanDir('./inc')
 sourceScanner.ScanDir('./src')
 
 # Dump the dox
-AutoDox.OutputDocs('./scripts/doc/vos64.wiki')
+AutoDox.OutputDocs('./scripts/doc/')
 #AutoDox.OutputFuncCallgraph('doc/funcCallgraph.dot')
 #AutoDox.OutputModCallgraph('doc/modCallgraph.dot')
