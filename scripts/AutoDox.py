@@ -4,68 +4,221 @@ import collections
 # Represents a code module
 class Module:
 	def __init__(self):
+		self.name = 'No Module'
+		self.brief = ''
+		self.detail = ''
 		self.callees = set()
 		self.callers = set()
 		self.functions = set()
-		self.brief = ''
-		self.detail = ''
 
-	def AddCaller(self, callerName):
-		self.callers.add(callerName)
+
+	def SetName(self, modName):
+		self.name = modName
+
+	def GetName(self):
+		return self.name
+
+
+	def SetBrief(self, brief):
+		self.brief = brief
+
+	def GetBrief(self):
+		return self.brief
+
+
+	def AddDetail(self, detail):
+		self.detail = self.detail + detail + '\n'
+
+	def GetDetail(self):
+		return self.detail
+
 
 	def AddCallee(self, calleeName):
 		self.callees.add(calleeName)
 
+	def GetCallees(self):
+		return self.callees
+
+
+	def AddCaller(self, callerName):
+		self.callers.add(callerName)
+
+	def GetCallers(self):
+		return self.callers
+
+
 	def AddFunction(self, funcName):
 		self.functions.add(funcName)
 
-	def AddBrief(self, brief):
-		self.brief = self.brief + brief
-
-	def AddDetail(self, detail):
-		self.detail = self.detail + detail
+	def GetFunctions(self):
+		return self.functions
 
 
 # Represents a function
 class Function:
 	def __init__(self):
-		self.callees = set()
-		self.callers = set()
-		self.module = '<Null Module>'
+		self.name = ''
+		self.module = 'No Module'
 		self.brief = ''
 		self.detail = ''
 		self.inputs = ''
 		self.outputs = ''
 		self.sideEffects = ''
+		self.callees = set()
+		self.callers = set()
+
+
+	def SetName(self, funcName):
+		self.name = funcName
+
+	def GetName(self):
+		return self.name
+
 
 	def SetModule(self, modName):
 		self.module = modName
 
-	def AddCaller(self, callerName):
-		self.callers.add(callerName)
+	def GetModule(self):
+		return self.module
+
+
+	def SetBrief(self, brief):
+		self.brief = brief
+
+	def GetBrief(self):
+		return self.brief
+
+
+	def AddDetail(self, detail):
+		self.detail = self.detail + detail + '\n'
+
+	def GetDetail(self):
+		return self.detail
+
+
+	def AddInput(self, inputText):
+		self.inputs = self.inputs + '\n' + inputText
+
+	def AddOutput(self, outputText):
+		self.outputs = self.outputs + '\n' + outputText
+
+	def AddSideEffect(self, sideEffectText):
+		self.sideEffects = self.sideEffects + '\n' + sideEffectText
+
 
 	def AddCallee(self, calleeName):
 		self.callees.add(calleeName)
 
-	def AddBrief(self, brief):
-		self.brief = self.brief + '\n' + brief
+	def GetCallees(self):
+		return self.callees
 
-	def AddDetail(self, detail):
-		self.detail = self.detail + '\n' + detail
 
-	def AddInputs(self, inputs):
-		self.inputs = self.inputs + '\n' + inputs
+	def AddCaller(self, callerName):
+		self.callers.add(callerName)
 
-	def AddOutputs(self, outputs):
-		self.outputs = self.outputs + '\n' + outputs
-
-	def AddSideEffects(self, sideEffects):
-		self.sideEffects = self.sideEffects + '\n' + sideEffects
+	def GetCallers(self):
+		return self.callers
 
 
 # For containing modules and functions while scanning
 modules = collections.defaultdict(Module)
 functions = collections.defaultdict(Function)
+
+
+# For building the markdown wiki pages
+
+def MakeLink(toMod, toFunc, text = ''):
+	ret = ''
+
+	if toFunc != '':
+		# Link to function page
+		if text == '':
+			text = toFunc
+		ret = '[[' + text + '|function-index#function-' + toFunc.lower() + ']]'
+	elif toFunc == '':
+		# Link to module page
+		if text == '':
+			text = toMod
+		ret = '[[' + text + '|module-index#module-' + toMod.lower() + ']]'
+
+	return ret
+
+def MakeModulePage():
+	text = ''
+
+	# Make table of contents
+	text = text + '# Contents\n\n'
+	for modName, module in modules.items():
+		text = text + '* ' + MakeLink(module.GetName(), '')
+		text = text + ' - ' + module.GetBrief() + '\n'
+	text = text + '\n'
+	text = text + '---\n\n'
+
+	# Make contents
+	for modName, module in modules.items():
+		text = text + '# Module ' + module.GetName() + '\n\n'
+		text = text + module.GetBrief() + '\n\n'
+		text = text + '## Detail\n\n'
+		text = text + module.GetDetail() + '\n\n'
+		text = text + '## Functions\n\n'
+		for funcName in module.GetFunctions():
+			text = text + '* ' + MakeLink(module.GetName(), funcName)
+			text = text + ' - ' + functions[funcName].GetBrief() + '\n'
+		text = text + '\n'
+		text = text + '## Calls\n\n'
+		for calleeName in module.GetCallees():
+			text = text + '* ' + MakeLink(calleeName, '')
+			text = text + ' - ' + modules[calleeName].GetBrief() + '\n'
+		text = text + '\n'
+		text = text + '## Called By\n\n'
+		for callerName in module.GetCallers():
+			text = text + '* ' + MakeLink(callerName, '')
+			text = text + ' - ' + modules[callerName].GetBrief() + '\n'
+		text = text + '\n'
+		text = text + '---\n\n'
+
+	return text
+
+def MakeFunctionPage():
+	text = ''
+
+	# Make table of contents
+	text = text + '# Contents\n\n'
+	for modName, module in modules.items():
+		text = text + '* ' + MakeLink(module.GetName(), '')
+		text = text + ' - ' + module.GetBrief() + '\n'
+		for funcName in module.GetFunctions():
+			text = text + '  * ' + MakeLink(module.GetName(), funcName)
+			text = text + ' - ' + functions[funcName].GetBrief() + '\n'
+		text = text + '\n'
+	text = text + '---\n\n'
+
+	# Make contents
+	for modName, module in modules.items():
+		for funcName in module.GetFunctions():
+			function = functions[funcName]
+			text = text + '# Function ' + function.GetName() + '\n\n'
+			text = text + 'Part of Module '
+			text = text + MakeLink(module.GetName(), '') + '\n\n'
+			text = text + function.GetBrief() + '\n\n'
+			text = text + '## Pass\n\n'
+			text = text + '## Return\n\n'
+			text = text + '## Side Effects\n\n'
+			text = text + '## Detail\n\n'
+			text = text + function.GetDetail() + '\n\n'
+			text = text + '## Calls\n\n'
+			for calleeName in function.GetCallees():
+				text = text + '* ' + MakeLink(functions[calleeName].GetModule, calleeName)
+				text = text + ' - ' + functions[calleeName].GetBrief() + '\n'
+			text = text + '\n'
+			text = text + '## Called By\n\n'
+			for callerName in function.GetCallers():
+				text = text + '* ' + MakeLink(functions[callerName].GetModule, callerName)
+				text = text + ' - ' + functions[callerName].GetBrief() + '\n'
+			text = text + '\n'
+			text = text + '---\n\n'
+
+	return text
 
 
 # Scans comments to gather documentation information
@@ -75,11 +228,10 @@ class DocScanner:
 	STATE_FUNC = 2
 
 	SUBSTATE_NONE = 0
-	SUBSTATE_BRIEF = 1
-	SUBSTATE_DETAIL = 2
-	SUBSTATE_INPUTS = 3
-	SUBSTATE_OUTPUTS = 4
-	SUBSTATE_SIDEEFFECTS = 5
+	SUBSTATE_DETAIL = 1
+	SUBSTATE_INPUTS = 2
+	SUBSTATE_OUTPUTS = 3
+	SUBSTATE_SIDEEFFECTS = 4
 
 	def __init__(self, sourceScanner):
 		sourceScanner.SetCallback('newfile', self.CBNewFile)
@@ -88,7 +240,7 @@ class DocScanner:
 		self.state = self.STATE_NONE
 		self.substate = self.SUBSTATE_NONE
 		self.filename = ''
-		self.modname = ''
+		self.modname = 'No Module'
 		self.funcname = ''
 
 	def CBNewFile(self, dummy, pathname):
@@ -114,30 +266,30 @@ class DocScanner:
 			self.state = self.STATE_MOD
 			self.substate = self.SUBSTATE_NONE
 			modules[self.modname] = Module()
+			modules[self.modname].SetName(self.modname)
 		elif words[0] == 'function:':
 			self.funcname = words[1]
 			self.state = self.STATE_FUNC
 			self.substate = self.SUBSTATE_NONE
 			modules[self.modname].AddFunction(self.funcname)
 			functions[self.funcname].SetModule(self.modname)
+			functions[self.funcname].SetName(self.funcname)
 
 		# Handle switching between microstates
 		if self.state == self.STATE_MOD:
 			if self.substate == self.SUBSTATE_NONE:
 				# check for brief or detail headers
 				if words[0] == 'brief:':
-					self.substate = self.SUBSTATE_BRIEF
+					modules[self.modname].SetBrief(commenttext[6:])
 				elif words[0] == 'detail:':
 					self.substate = self.SUBSTATE_DETAIL
-			elif self.substate == self.SUBSTATE_BRIEF:
-				modules[self.modname].AddBrief(commenttext)
 			elif self.substate == self.SUBSTATE_DETAIL:
 				modules[self.modname].AddDetail(commenttext)
 		elif self.state == self.STATE_FUNC:
 			if self.substate == self.SUBSTATE_NONE:
 				# check for any headers
 				if words[0] == 'brief:':
-					self.substate = self.SUBSTATE_BRIEF
+					functions[self.funcname].SetBrief(commenttext[6:])
 				elif words[0] == 'detail:':
 					self.substate = self.SUBSTATE_DETAIL
 				elif words[0] == 'pass:':
@@ -146,16 +298,14 @@ class DocScanner:
 					self.substate = self.SUBSTATE_OUTPUTS
 				elif words[0] == 'sideeffects:':
 					self.substate = self.SUBSTATE_SIDEEFFECTS
-			elif self.substate == self.SUBSTATE_BRIEF:
-				functions[self.funcname].AddBrief(commenttext)
 			elif self.substate == self.SUBSTATE_DETAIL:
 				functions[self.funcname].AddDetail(commenttext)
 			elif self.substate == self.SUBSTATE_INPUTS:
-				functions[self.funcname].AddInputs(commenttext)
+				functions[self.funcname].AddInput(commenttext)
 			elif self.substate == self.SUBSTATE_OUTPUTS:
-				functions[self.funcname].AddOutputs(commenttext)
+				functions[self.funcname].AddOutput(commenttext)
 			elif self.substate == self.SUBSTATE_SIDEEFFECTS:
-				functions[self.funcname].AddSideEffects(commenttext)
+				functions[self.funcname].AddSideEffect(commenttext)
 
 
 # Scans labels and call instructions to gather dependency information
@@ -180,6 +330,7 @@ class TreeScanner:
 	def CBLabel(self, linenum, label):
 		if self.state == self.STATE_CODE and label[0] != '.':
 			self.funcname = label
+			functions[self.funcname].SetName(self.funcname)
 
 	def CBSection(self, linenum, section):
 		if section[0] == '.text' or section[0] == 'text' or 'exec' in section[1:]:
@@ -207,80 +358,11 @@ def OutputDocs(path):
 
 	# Write module index wiki page
 	with open(path + '/Module-Index.md', 'w+') as f:
-		for modName in modules.keys():
-			f.write('#Module ' + modName + '\n')
-			f.write(modules[modName].brief + '\n')
-			f.write('##Detail\n')
-			f.write(modules[modName].detail + '\n')
-			f.write('##Functions\n')
-			for funcName in modules[modName].functions:
-				f.write('* ' + funcName + ' - ')
-				f.write(functions[funcName].brief + '\n')
-			f.write('\n\n')
-			f.write('##Calls\n')
-			for modName in modules[modName].callees:
-				f.write('* ' + modName + ' - ')
-				f.write(modules[modName].brief + '\n')
-			f.write('\n\n')
-			f.write('##Called By\n')
-			for modName in modules[modName].callers:
-				f.write('* ' + modName + ' - ')
-				f.write(modules[modName].brief + '\n')
-			f.write('\n\n')
+		f.write(MakeModulePage())
 
 	# Write function index wiki page
 	with open(path + '/Function-Index.md', 'w+') as f:
-		for funcName in functions.keys():
-			f.write('#Function ' + funcName + '\n')
-			f.write(functions[funcName].brief + '\n\n')
-			f.write('Part of Module ' + functions[funcName].module + '\n')
-			f.write('##Pass\n')
-			f.write(functions[funcName].inputs + '\n')
-			f.write('##Return\n')
-			f.write(functions[funcName].outputs + '\n')
-			f.write('##Side Effects\n')
-			f.write(functions[funcName].sideEffects + '\n')
-			f.write('##Detail\n')
-			f.write(functions[funcName].detail + '\n')
-			f.write('##Calls\n')
-			for calleeName in functions[funcName].callees:
-				f.write('* ' + calleeName + ' - ')
-				f.write(functions[calleeName].brief + '\n')
-			f.write('\n\n')
-			f.write('##Called By\n')
-			for callerName in functions[funcName].callers:
-				f.write('* ' + callerName + ' - ')
-				f.write(functions[callerName].brief + '\n')
-			f.write('\n\n')
-
-	#for modName in modules.keys():
-	#	prettyName = modName[0].upper() + modName[1:]
-	#	with open(path + '/Module ' + prettyName + '.md', 'w+') as f:
-	#		f.write('#Module ' + prettyName + '\n')
-	#		f.write(modules[modName].brief + '\n')
-	#		f.write('##Detail\n')
-	#		f.write(modules[modName].detail + '\n')
-	#		f.write('##Calls\n')
-	#		f.write('##Called By\n')
-	#		f.write('##Functions\n')
-	#		for funcName in modules[modName].functions:
-	#			f.write('###' + funcName + '\n')
-	#			f.write(functions[funcName].brief + '\n')
-	#			f.write('####Pass\n')
-	#			f.write(functions[funcName].inputs + '\n')
-	#			f.write('####Return\n')
-	#			f.write(functions[funcName].outputs + '\n')
-	#			f.write('####Side Effects\n')
-	#			f.write(functions[funcName].sideEffects + '\n')
-	#			f.write('####Detail\n')
-	#			f.write(functions[funcName].detail + '\n')
-	#			f.write('####Calls\n')
-	#			for calleeName in functions[funcName].callees:
-	#				f.write('*' + calleeName + '\n')
-	#			f.write('####Called By\n')
-	#			for callerName in functions[funcName].callers:
-	#				f.write('*' + callerName + '\n')
-	#			f.write('---\n')
+		f.write(MakeFunctionPage())
 
 
 # Generates a .dot file for generating a callgraph with graphviz

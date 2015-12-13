@@ -1,9 +1,7 @@
 ;------------------------------------------------------------------------------
 ; module: bitmap
 ;
-; brief:
-; routines for managing bitmaps used for allocation
-; /
+; brief: Routines for managing bitmaps used for allocation
 ;
 ; detail:
 ; /
@@ -20,9 +18,7 @@
 ;------------------------------------------------------------------------------
 ; function: BitmapBitSet
 ;
-; brief:
-; Sets a bit in a bitmap
-; /
+; brief: Sets a bit in a bitmap
 ;
 ; pass:
 ; rsi	-> bitmap
@@ -44,9 +40,7 @@
 ;------------------------------------------------------------------------------
 ; function: BitmapBitClear
 ;
-; brief:
-; Clears a bit in a bitmap
-; /
+; brief: Clears a bit in a bitmap
 ;
 ; pass:
 ; rsi	-> bitmap
@@ -68,9 +62,7 @@
 ;------------------------------------------------------------------------------
 ; function: BitmapBitFind
 ;
-; brief:
-; Finds the first clear bit in a bitmap
-; /
+; brief: Finds the first clear bit in a bitmap
 ;
 ; pass:
 ; rsi	-> bitmap
@@ -96,9 +88,7 @@
 ;------------------------------------------------------------------------------
 ; function: BitmapRangeSet
 ;
-; brief:
-; Sets a block of bits in a bitmap
-; /
+; brief: Sets a block of bits in a bitmap
 ;
 ; pass:
 ; rsi	-> bitmap
@@ -121,9 +111,7 @@
 ;------------------------------------------------------------------------------
 ; function: BitmapRangeClear
 ;
-; brief:
-; Clears a block of bits in a bitmap
-; /
+; brief: Clears a block of bits in a bitmap
 ;
 ; pass:
 ; rsi	-> bitmap
@@ -146,9 +134,7 @@
 ;------------------------------------------------------------------------------
 ; function: BitmapRangeFind
 ;
-; brief:
-; Finds the first block of clear bits in a bitmap
-; /
+; brief: Finds the first block of clear bits in a bitmap
 ;
 ; pass:
 ; rsi	-> bitmap
@@ -174,9 +160,7 @@
 ;------------------------------------------------------------------------------
 ; function: BitmapTest
 ;
-; brief:
-; Runs regression tests of bitmap functions
-; /
+; brief: Runs regression tests of bitmap functions
 ;
 ; pass:
 ; none
