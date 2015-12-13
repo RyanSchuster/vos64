@@ -3,6 +3,7 @@ bin/**
 *.o
 *.bin
 *.iso
+*.dot
 *~
 *.swp
 *.pyc
