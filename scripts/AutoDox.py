@@ -99,11 +99,22 @@ class Function:
 	def AddInput(self, inputText):
 		self.inputs = self.inputs + '\n' + inputText
 
+	def GetInputs(self):
+		return self.inputs
+
+
 	def AddOutput(self, outputText):
 		self.outputs = self.outputs + '\n' + outputText
 
+	def GetOutputs(self):
+		return self.outputs
+
+
 	def AddSideEffect(self, sideEffectText):
 		self.sideEffects = self.sideEffects + '\n' + sideEffectText
+
+	def GetSideEffects(self):
+		return self.sideEffects
 
 
 	def AddCallee(self, calleeName):
@@ -141,6 +152,42 @@ def MakeLink(toMod, toFunc, text = ''):
 			text = toMod
 		ret = '[[' + text + '|module-index#module-' + toMod.lower() + ']]'
 
+	return ret
+
+def MakeRegList(section):
+	if section == '':
+		return 'None\n\n'
+
+	hasTable = False
+	table = '|location||description|\n|:---|:---:|:---|\n'
+	hasLines = False
+	lines = ''
+
+	for line in section.splitlines():
+		findPtr = line.find('->')
+		findEq = line.find('=')
+		if findPtr > 0:
+			hasTable = True
+			table = table + '|`' + line[:findPtr]
+			table = table + '`|->|'
+			table = table + line[findPtr + 2:] + '|\n'
+		elif findEq > 0:
+			hasTable = True
+			table = table + '|`' + line[:findEq]
+			table = table + '`|=|'
+			table = table + line[findEq + 1:] + '|\n'
+		elif line != '':
+			hasLines = True
+			lines = lines + '* ' + line + '\n'
+
+	if (not hasTable) and (not hasLines):
+		return 'None'
+
+	ret = ''
+	if hasTable:
+		ret = table + '\n'
+	if hasLines:
+		ret = ret + lines + '\n'
 	return ret
 
 def MakeModulePage():
@@ -202,8 +249,11 @@ def MakeFunctionPage():
 			text = text + MakeLink(module.GetName(), '') + '\n\n'
 			text = text + function.GetBrief() + '\n\n'
 			text = text + '## Pass\n\n'
+			text = text + MakeRegList(function.GetInputs())
 			text = text + '## Return\n\n'
+			text = text + MakeRegList(function.GetOutputs())
 			text = text + '## Side Effects\n\n'
+			text = text + MakeRegList(function.GetSideEffects())
 			text = text + '## Detail\n\n'
 			text = text + function.GetDetail() + '\n\n'
 			text = text + '## Calls\n\n'
