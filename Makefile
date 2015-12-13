@@ -108,4 +108,4 @@ review :
 
 .PHONY : dox
 dox :
-	python docgen.py
+	scripts/ScanTree.py

@@ -244,8 +244,13 @@ class DocScanner:
 		self.funcname = ''
 
 	def CBNewFile(self, dummy, pathname):
-		if self.state != self.STATE_NONE:
-			print('Error: DocScanner not in STATE_NONE at beginning of new file.')
+		if self.substate != self.SUBSTATE_NONE:
+			print 'Error: DocScanner not in STATE_NONE at beginning of new file.'
+			print '\tstate:    ' + {0:'NONE', 1:'MOD', 2:'FUNC'}[self.state]
+			print '\tsubstate: ' + {0:'NONE', 1:'DETAIL', 2:'INPUTS', 3:'OUTPUTS', 4:'SIDEEFFECTS'}[self.substate]
+			print '\tfile:     ' + self.filename
+			print '\tmodule:   ' + self.modname
+			print '\tfunction: ' + self.funcname
 		self.state = self.STATE_NONE
 		self.substate = self.SUBSTATE_NONE
 		self.filename = pathname
@@ -323,9 +328,13 @@ class TreeScanner:
 		self.funcname = ''
 
 	def CBNewFile(self, dummy, pathname):
-		if self.state != self.STATE_NONE:
-			print('Error: TreeScanner not in STATE_NONE at beginning of new file.')
+		#if self.state != self.STATE_NONE:
+		#	print('Error: TreeScanner not in SUBSTATE_NONE at beginning of new file.')
+		#	print '\tstate: ' + {0:'STATE_NONE', 1:'STATE_CODE'}[self.state]
+		#	print '\tfile:  ' + self.filename
+		#	print '\tfunc:  ' + self.funcname
 		self.state = self.STATE_NONE
+		self.funcname = ''
 
 	def CBLabel(self, linenum, label):
 		if self.state == self.STATE_CODE and label[0] != '.':

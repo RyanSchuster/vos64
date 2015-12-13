@@ -16,9 +16,10 @@ docScanner = AutoDox.DocScanner(sourceScanner)
 treeScanner = AutoDox.TreeScanner(sourceScanner)
 
 # Scan some garbage
-sourceScanner.ScanDir('./testsource')
+sourceScanner.ScanDir('./inc')
+sourceScanner.ScanDir('./src')
 
 # Dump the dox
-AutoDox.OutputDocs('doc/vos64.wiki')
+AutoDox.OutputDocs('./scripts/doc/vos64.wiki')
 #AutoDox.OutputFuncCallgraph('doc/funcCallgraph.dot')
 #AutoDox.OutputModCallgraph('doc/modCallgraph.dot')
