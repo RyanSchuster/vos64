@@ -494,6 +494,7 @@ class TreeScanner:
 		sourceScanner.SetCallback('label', self.CBLabel)
 		sourceScanner.SetCallback('section', self.CBSection)
 		sourceScanner.SetCallback('code', self.CBCode)
+		sourceScanner.SetCallback('comment', self.CBComment)
 
 		self.state = self.STATE_NONE
 		self.funcname = ''
@@ -519,9 +520,19 @@ class TreeScanner:
 			self.state = self.STATE_NONE
 
 	def CBCode(self, linenum, codeline):
+		# Create a dependency for call instructions
+		# FIXME: make sure the callee is actually a label and not a register
 		if self.state == self.STATE_CODE:
 			words = codeline.split()
 			if len(words) >= 2 and words[0] == 'call':
+				functions[self.funcname].AddCallee(words[1])
+				functions[words[1]].AddCaller(self.funcname)
+
+	def CBComment(self, linenum, comment):
+		# Force a dependency for calls that don't use the call instruction
+		if self.state == self.STATE_CODE:
+			words = comment.split()
+			if len(words) >= 2 and words[0] == 'calls: ':
 				functions[self.funcname].AddCallee(words[1])
 				functions[words[1]].AddCaller(self.funcname)
 

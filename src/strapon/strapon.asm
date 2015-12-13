@@ -125,6 +125,7 @@ StraponEntry:
 	mov	r15, qword Entry
 
 	; Jump to the entry point of the kernel proper
+	; calls: Entry
 	jmp	r15
 	[bits 32]
 

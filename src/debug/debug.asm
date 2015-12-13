@@ -117,6 +117,7 @@ DebugPrintHexB:
 
 	mov	rcx, 0x00000002
 	ror	rdx, 0x04
+	; calls: DebugPrintHex
 	jmp	DebugPrintHex
 
 
@@ -129,6 +130,7 @@ DebugPrintHexW:
 
 	mov	rcx, 0x00000004
 	ror	rdx, 0x0C
+	; calls: DebugPrintHex
 	jmp	DebugPrintHex
 
 
@@ -141,6 +143,7 @@ DebugPrintHexD:
 
 	mov	rcx, 0x00000008
 	ror	rdx, 0x1C
+	; calls: DebugPrintHex
 	jmp	DebugPrintHex
 
 
@@ -153,6 +156,7 @@ DebugPrintHexQ:
 
 	mov	rcx, 0x00000010
 	rol	rdx, 0x04
+	; calls: DebugPrintHex
 	jmp	DebugPrintHex
 
 
@@ -191,21 +195,46 @@ DebugPrintHex:
 
 [global DebugPrintBinB]
 DebugPrintBinB:
+	; calls: DebugPrintBin
 	ret
 
 
 [global DebugPrintBinW]
 DebugPrintBinW:
+	; calls: DebugPrintBin
 	ret
 
 
 [global DebugPrintBinD]
 DebugPrintBinD:
+	; calls: DebugPrintBin
 	ret
 
 
 [global DebugPrintBinQ]
 DebugPrintBinQ:
+	; calls: DebugPrintBin
+	ret
+
+
+;------------------------------------------------------------------------------
+; function: DebugPrintBin
+;
+; brief: Internally called by DebugPrintBin[B|W|D|Q]
+;
+; pass:
+; /
+;
+; return:
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
+DebugPrintBin:
 	ret
 
 

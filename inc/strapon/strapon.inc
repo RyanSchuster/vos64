@@ -24,7 +24,7 @@
 
 
 ;------------------------------------------------------------------------------
-; function: StraponStart
+; function: StraponEntry
 ;
 ; brief: Entry point for the 32-bit to 64-bit stage
 ;
@@ -32,15 +32,18 @@
 ; /
 ;
 ; return:
+; Doesn't return
 ; /
 ;
 ; sideeffects:
 ; /
 ;
 ; detail:
+; Sets up some temporary paging structures, enters long mode, and jumps to the
+; entry point of the kernel proper (Entry).
 ; /
 ;------------------------------------------------------------------------------
-[extern StraponStart]
+[extern StraponEntry]
 
 
 %endif ;MOD_STRAPON
