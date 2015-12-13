@@ -4,8 +4,8 @@
 ; brief: 32-bit to 64-bit bootstrap code
 ;
 ; detail:
-; Because the jerk-offs who wrote the multiboot standard are WAAAY behind in
-; the game.
+; Because the folks who wrote the multiboot standard are WAAAY behind in the
+; game.
 ;
 ; This sets up the state that multiboot compatible bootloaders _should_ set up
 ; for 64-bit images.
