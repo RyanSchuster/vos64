@@ -59,6 +59,7 @@ class Function:
 	def __init__(self):
 		self.name = ''
 		self.module = 'No_Module'
+		self.internal = True
 		self.brief = ''
 		self.detail = ''
 		self.inputs = ''
@@ -80,6 +81,13 @@ class Function:
 
 	def GetModule(self):
 		return self.module
+
+
+	def MakeGlobal(self):
+		self.internal = False
+
+	def IsGlobal(self):
+		return not self.internal
 
 
 	def SetBrief(self, brief):
@@ -212,6 +220,8 @@ def MakeModulePage():
 		text = text + module.GetDetail() + '\n\n'
 		text = text + '## Functions\n\n'
 		for funcName in module.GetFunctions():
+			if not functions[funcName].IsGlobal():
+				continue
 			text = text + '* ' + MakeLink(module.GetName(), funcName)
 			text = text + ' - ' + functions[funcName].GetBrief() + '\n'
 		text = text + '\n'
@@ -263,14 +273,26 @@ def MakeFunctionPage():
 			text = text + '## Detail\n\n'
 			text = text + function.GetDetail() + '\n\n'
 			text = text + '## Calls\n\n'
-			for calleeName in function.GetCallees():
-				text = text + '* ' + MakeLink(functions[calleeName].GetModule, calleeName)
-				text = text + ' - ' + functions[calleeName].GetBrief() + '\n'
+			# Copy the list of names, we'll be modifying it
+			calleeList = list(function.GetCallees())
+			for calleeName in calleeList:
+				if functions[calleeName].IsGlobal():
+					text = text + '* ' + MakeLink(functions[calleeName].GetModule, calleeName)
+					text = text + ' - ' + functions[calleeName].GetBrief() + '\n'
+				else:
+					# If the callee is an internal function, skip it and grab its callees
+					calleeList.extend(functions[calleeName].GetCallees())
 			text = text + '\n'
 			text = text + '## Called By\n\n'
-			for callerName in function.GetCallers():
-				text = text + '* ' + MakeLink(functions[callerName].GetModule, callerName)
-				text = text + ' - ' + functions[callerName].GetBrief() + '\n'
+			# Copy the list of names, we'll be modifying it
+			callerList = list(function.GetCallers())
+			for callerName in callerList:
+				if functions[callerName].IsGlobal():
+					text = text + '* ' + MakeLink(functions[callerName].GetModule, callerName)
+					text = text + ' - ' + functions[callerName].GetBrief() + '\n'
+				else:
+					# if the caller is an internal function, skip it and grab its callers
+					callerList.extend(functions[callerName].GetCallers())
 			text = text + '\n'
 			text = text + '---\n\n'
 
@@ -319,6 +341,7 @@ class DocScanner:
 	def __init__(self, sourceScanner):
 		sourceScanner.SetCallback('newfile', self.CBNewFile)
 		sourceScanner.SetCallback('comment', self.CBComment)
+		sourceScanner.SetCallback('global', self.CBGlobal)
 
 		self.state = self.STATE_NONE
 		self.substate = self.SUBSTATE_NONE
@@ -394,6 +417,13 @@ class DocScanner:
 				functions[self.funcname].AddOutput(commenttext)
 			elif self.substate == self.SUBSTATE_SIDEEFFECTS:
 				functions[self.funcname].AddSideEffect(commenttext)
+
+	def CBGlobal(self, linenum, labelName):
+		# The [extern] line always comes after the documentation, so
+		# if the label being extern'd is a function, it will be in the
+		# dictionary by now
+		if labelName in functions.keys():
+			functions[labelName].MakeGlobal()
 
 
 # Scans labels and call instructions to gather dependency information

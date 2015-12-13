@@ -8,12 +8,13 @@ import os
 import re
 
 class SourceScanner:
-	CALLBACK_NEWFILE = "newfile"	# started scanning a new file
-	CALLBACK_LABEL = "label"	# label is scanned
-	CALLBACK_PREASM = "preasm"	# preassembler macro
-	CALLBACK_SECTION = "section"	# section name is scanned
-	CALLBACK_CODE = "code"		# a line of code is scanned
-	CALLBACK_COMMENT = "comment"	# a comment is scanned
+	CALLBACK_NEWFILE = 'newfile'	# started scanning a new file
+	CALLBACK_LABEL = 'label'	# label is scanned
+	CALLBACK_PREASM = 'preasm'	# preassembler macro
+	CALLBACK_SECTION = 'section'	# section name is scanned
+	CALLBACK_GLOBAL = 'global'	# label was marked as global
+	CALLBACK_CODE = 'code'		# a line of code is scanned
+	CALLBACK_COMMENT = 'comment'	# a comment is scanned
 
 	# callbacks take two arguments: line number, some text string
 
@@ -65,10 +66,15 @@ class SourceScanner:
 
 		# TODO: sections?
 		section = ''
+		extern = ''
 		words = re.findall(r"[\w']+", code)
-		if len(words) > 0 and words[0] == 'section':
-			code = ''
-			section = words[1:]
+		if len(words) > 0:
+			if words[0] == 'section':
+				code = ''
+				section = words[1:]
+			if words[0] == 'extern':
+				code = ''
+				extern = words[1]
 
 		# call appropriate callbacks
 		if label:
@@ -77,6 +83,8 @@ class SourceScanner:
 			self.CallCallback(self.CALLBACK_PREASM, linenum, preassembler)
 		if section:
 			self.CallCallback(self.CALLBACK_SECTION, linenum, section)
+		if extern:
+			self.CallCallback(self.CALLBACK_GLOBAL, linenum, extern)
 		if code:
 			self.CallCallback(self.CALLBACK_CODE, linenum, code)
 		if isComment:
