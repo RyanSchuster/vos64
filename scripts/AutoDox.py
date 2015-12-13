@@ -263,7 +263,7 @@ class DocScanner:
 
 		words = commenttext.split()
 		if len(words) == 0:
-			return
+			words = ['']
 
 		# Handle switching between macrostates
 		if words[0] == 'module:':

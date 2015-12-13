@@ -44,6 +44,9 @@ class SourceScanner:
 		commentStart = line.find(';')
 		if commentStart < 0:
 			commentStart = len(line)
+			isComment = False
+		else:
+			isComment = True
 		labelEnd = line.find(':')
 		if labelEnd < 0:
 			labelEnd = 0
@@ -76,7 +79,7 @@ class SourceScanner:
 			self.CallCallback(self.CALLBACK_SECTION, linenum, section)
 		if code:
 			self.CallCallback(self.CALLBACK_CODE, linenum, code)
-		if comment:
+		if isComment:
 			self.CallCallback(self.CALLBACK_COMMENT, linenum, comment)
 
 	def ScanFile(self, path):
