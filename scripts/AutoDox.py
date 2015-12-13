@@ -445,6 +445,9 @@ def OutputDocs(path):
 		modName = functions[funcName].module
 		for calleeFunc in functions[funcName].callees:
 			calleeModName = functions[calleeFunc].module
+			if modName == calleeModName:
+				# Don't connect a module to itself
+				continue
 			modules[modName].AddCallee(calleeModName)
 			modules[calleeModName].AddCaller(modName)
 
