@@ -1,4 +1,5 @@
 %define MOD_SERIAL
+; module: Serial
 
 
 %include "debug/serial.inc"

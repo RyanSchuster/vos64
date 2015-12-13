@@ -251,6 +251,8 @@ def MakeFunctionPage():
 		text = text + '* ' + MakeLink(module.GetName(), '')
 		text = text + ' - ' + module.GetBrief() + '\n'
 		for funcName in module.GetFunctions():
+			if not functions[funcName].IsGlobal():
+				continue
 			text = text + '  * ' + MakeLink(module.GetName(), funcName)
 			text = text + ' - ' + functions[funcName].GetBrief() + '\n'
 		text = text + '\n'
@@ -260,6 +262,8 @@ def MakeFunctionPage():
 	for modName, module in modules.items():
 		for funcName in module.GetFunctions():
 			function = functions[funcName]
+			if not function.IsGlobal():
+				continue
 			text = text + '# Function ' + function.GetName() + '\n\n'
 			text = text + 'Part of Module '
 			text = text + MakeLink(module.GetName(), '') + '\n\n'
@@ -303,6 +307,7 @@ def MakeCallgraphDotfile():
 
 	# Separate functions into clusters by modules
 	for modName, module in modules.items():
+		# Skip the Debug module, it will clutter the graph and isn't interesting
 		if 'Debug' in modName:
 			continue
 		text = text + '\tsubgraph cluster_' + modName + ' {\n'
@@ -316,12 +321,65 @@ def MakeCallgraphDotfile():
 
 	# Connect functions by dependency
 	for funcName, function in functions.items():
+		# Skip Debug functions, they will clutter the graph and aren't interesting
+		# Skip regression test functions, they will clutter the graph and aren't interesting
+		if 'Debug' in funcName:#function.GetModule == 'Debug':
+			continue
+		if 'Test' in funcName:#funcName.endswith('Test'):
+			continue
+
 		for calleeName in function.GetCallees():
-			if ('Debug' in funcName) or ('Debug' in calleeName):
+			# Skip Debug functions, they will clutter the graph and aren't interesting
+			# Skip regression test functions, they will clutter the graph and aren't interesting
+			if 'Debug' in calleeName:#functions[calleeName].GetModule == 'Debug':
 				continue
+			if 'Test' in calleeName:#calleeName.endswith('Test'):
+				continue
+
+			# Color local functions differently
+			if not functions[funcName].IsGlobal():
+				text = text + '\t' + funcName + ' [color = lightgrey];\n'
+			# This will lead to some redundancy, but is an easy way to get full coverage
+			if not functions[calleeName].IsGlobal():
+				text = text + '\t' + calleeName + ' [color = lightgrey];\n'
 			text = text + '\t' + funcName + ' -> ' + calleeName + ';\n'
 
 	text = text + '}\n'
+
+	return text
+
+def MakeDebugFile():
+	text = ''
+
+	# Output modules
+	for modName, module in modules.items():
+		text = text + 'Module: ' + modName + '\n'
+		text = text + '\tName: "' + module.GetName() + '"\n'
+		text = text + '\tCalls:\n'
+		for calleeName in module.GetCallees():
+			text = text + '\t\t"' + calleeName + '"\n'
+		text = text + '\tCalled By:\n'
+		for callerName in module.GetCallers():
+			text = text + '\t\t"' + callerName + '"\n'
+		text = text + '\tFunctions:\n'
+		for funcName in module.GetFunctions():
+			text = text + '\t\t"' + funcName + '"\n'
+		text = text + '\n'
+	text = text + '\n'
+
+	# Output functions
+	for funcName, function in functions.items():
+		text = text + 'Function: "' + funcName + '"\n'
+		text = text + '\tName: "' + function.GetName() + '"\n'
+		text = text + '\tModule: "' + function.GetModule() + '"\n'
+		text = text + '\tCalls:\n'
+		for calleeName in function.GetCallees():
+			text = text + '\t\t"' + calleeName + '"\n'
+		text = text + '\tCalled By:\n'
+		for callerName in function.GetCallers():
+			text = text + '\t\t"' + callerName + '"\n'
+		text = text + '\n'
+	text = text + '\n'
 
 	return text
 
@@ -376,7 +434,7 @@ class DocScanner:
 			self.modname = words[1]
 			self.state = self.STATE_MOD
 			self.substate = self.SUBSTATE_NONE
-			modules[self.modname] = Module()
+			#modules[self.modname] = Module()
 			modules[self.modname].SetName(self.modname)
 		elif words[0] == 'function:':
 			self.funcname = words[1]
@@ -492,6 +550,10 @@ def OutputDocs(path):
 	# Write callgraph dotfile for graphviz
 	with open(path + 'callgraph.dot', 'w+') as f:
 		f.write(MakeCallgraphDotfile())
+
+	# Debug!
+	#with open(path + 'debug.txt', 'w+') as f:
+	#	f.write(MakeDebugFile())
 
 
 # Generates a .dot file for generating a callgraph with graphviz

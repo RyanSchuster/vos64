@@ -1,4 +1,5 @@
 %define MOD_DEBUG
+; module: Debug
 
 
 %include "debug/debug.inc"
@@ -155,6 +156,23 @@ DebugPrintHexQ:
 	jmp	DebugPrintHex
 
 
+;------------------------------------------------------------------------------
+; function: DebugPrintHex
+;
+; brief: Internally called by DebugPrintHex[B|W|D|Q]
+;
+; pass:
+; /
+;
+; return:
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
 DebugPrintHex:
 .loop:
 	movzx	rbx, dl

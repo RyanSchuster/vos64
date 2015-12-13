@@ -1,4 +1,5 @@
 %define MOD_ENTRY
+; module: Entry
 
 
 %include "defs.inc"
@@ -16,6 +17,24 @@
 [section .text]
 [bits 64]
 
+;------------------------------------------------------------------------------
+; function: Entry
+;
+; brief: Entry point for the kernel proper
+;
+; pass:
+; /
+;
+; return:
+; Doesn't return
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
 [global Entry]
 Entry:
 	mov	rsp, stack

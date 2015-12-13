@@ -1,4 +1,5 @@
 %define MOD_STRAPON
+; module: Strapon
 
 
 %include "strapon/strapon.inc"
@@ -129,24 +130,27 @@ StraponEntry:
 
 
 ;------------------------------------------------------------------------------
-; local function StraponAlloc4K
+; function: StraponAlloc4K
 ;
-; Allocates 4K aligned block of 4KB from the strapon's watermark allocator
+; brief: Allocates aligned block of 4KB from the strapon's watermark allocator
 ;
 ; pass:
-; none
+; /
 ;
 ; return:
 ; eax	-> block
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
+; detail:
 ; This is only the most basic allocator for getting off the ground.  Blocks
 ; cannot be freed, and allocations only need to be honored as long as the
 ; strapon's pagetables are being used.
+;
 ; Does no error checking - it's like memory management Lord of the Flies
+; /
 ;------------------------------------------------------------------------------
 [bits 32]
 StraponAlloc4K:
@@ -158,24 +162,32 @@ StraponAlloc4K:
 
 
 ;------------------------------------------------------------------------------
-; local function StraponMapPage
+; function: StraponMapPage
 ;
-; Maps a 2M pageframe into virtual memory
+; brief: Maps a 2M pageframe into virtual memory
 ;
 ; pass:
 ; arg0	= physical address low
 ; arg1	= physical address high
 ; arg2	= virtual address low
 ; arg3	= virtual address high
+; /
 ;
 ; return:
-; none
+; /
 ;
-; notes:
+; sideeffects:
+; /
+;
+; detail:
 ; Uses amd64 paging scheme
+;
 ; Pages are mapped as read/write/execute kernel pages
+;
 ; Will allocate paging table structures if needed
+;
 ; Does no sanity or error checking - it's basically Thunderdome in there
+; /
 ;------------------------------------------------------------------------------
 %define VIRT_HI		(ebp + 0x08)
 %define VIRT_LO		(ebp + 0x0C)

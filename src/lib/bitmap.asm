@@ -1,4 +1,5 @@
 %define MOD_BITMAP
+; module: Bitmap
 
 
 %include "lib/bitmap.inc"
@@ -351,6 +352,23 @@ BitmapRangeFind:
 
 %ifdef TEST_BITMAP
 
+;------------------------------------------------------------------------------
+; function: BitmapPrint
+;
+; brief: Prints bitmap contents for debugging
+;
+; pass:
+; /
+;
+; return:
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
 BitmapPrint:
 	PRINT	"Bitmap contents:"
 	xor	rax, rax

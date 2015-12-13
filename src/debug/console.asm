@@ -1,4 +1,5 @@
 %define MOD_CONSOLE
+; module: Console
 
 
 %include "debug/console.inc"
@@ -116,21 +117,22 @@ ConsoleClrScr:
 
 
 ;------------------------------------------------------------------------------
-; local function ConsoleScroll
+; function: ConsoleScroll
 ;
-; Scrolls the console output by one line
+; brief: Scrolls the console output by one line
 ;
 ; pass:
-; none
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
+; detail:
 ; Assumes the number of columns is a multiple of eight
+; /
 ;------------------------------------------------------------------------------
 ConsoleScroll:
 	push	rax
@@ -157,21 +159,23 @@ ConsoleScroll:
 
 
 ;------------------------------------------------------------------------------
-; local function ConsoleUpdateCursor
+; function: ConsoleUpdateCursor
 ;
-; Updates the blinky hardware cursor
+; brief: Updates the blinky hardware cursor
 ;
 ; pass:
 ; di	= character offset of cursor
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
+; detail:
 ; TODO: %define magic numbers and constants later
+; /
 ;------------------------------------------------------------------------------
 ConsoleUpdateCursor:
 	push	rax

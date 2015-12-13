@@ -1,4 +1,5 @@
 %define MOD_PMEM
+; module: PMem
 
 
 %include "hal/pmem.inc"
@@ -232,15 +233,27 @@ PMemSetSupermap:
 	ret
 
 
-;-----
+;------------------------------------------------------------------------------
+; function: PMemFindRegion
+;
+; brief: Finds a region?
+;
 ; pass:
-; rax = start 4K pageframe address
+; rax	= start 4K pageframe address
+; /
 ;
 ; return:
-; cf = set on error, clear on success
-; rdi -> region
-; rax = offset into region (still byte-aligned)
-;-----
+; cf	= set on error, clear on success
+; rdi	-> region
+; rax	= offset into region (still byte-aligned)
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
 PMemFindRegion:
 	; TODO: scan through list of regions
 	; this is here as a placeholder for now so the hooks are in place
