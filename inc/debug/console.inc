@@ -1,7 +1,12 @@
 ;------------------------------------------------------------------------------
-; module console
+; module: Console
 ;
-; console output for out-of-band debugging
+; brief: Console output for out-of-band debugging
+;
+; detail:
+; This is not meant as a device driver, only as one possible output for the
+; Debug module.
+; /
 ;------------------------------------------------------------------------------
 
 
@@ -13,61 +18,63 @@
 
 
 ;------------------------------------------------------------------------------
-; function ConsoleInit
+; function: ConsoleInit
 ;
-; Sets up the console output
+; brief: Sets up the console output
 ;
 ; pass:
-; none
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
-; none
+; detail:
+; /
 ;------------------------------------------------------------------------------
 [extern ConsoleInit]
 
 
 ;------------------------------------------------------------------------------
-; function ConsolePutChar
+; function: ConsolePutChar
 ;
-; Writes a character, handling special characters
+; brief: Writes a character, handling special characters
 ;
 ; pass:
 ; al	= character to print
+; /
 ;
 ; return:
-; none
+; /
 ;
 ; side effects:
-; none
+; /
 ;
-; notes:
+; detail:
 ; Handles CR, LF, and TAB
+; /
 ;------------------------------------------------------------------------------
 [extern ConsolePutChar]
 
 
 ;------------------------------------------------------------------------------
-; function ConsoleClrScr
+; function: ConsoleClrScr
 ;
-; Clears console output and resets the cursor
+; brief: Clears console output and resets the cursor
 ;
 ; pass:
-; none
+; /
 ;
 ; return:
-; none
+; /
 ;
 ; side effects:
-; none
+; /
 ;
-; notes:
-; none
+; detail:
+; /
 ;------------------------------------------------------------------------------
 [extern ConsoleClrScr]
 

@@ -1,8 +1,9 @@
 ;------------------------------------------------------------------------------
-; module strapon
+; module: Strapon
 ;
-; 32-bit to 64-bit bootstrap code
+; brief: 32-bit to 64-bit bootstrap code
 ;
+; detail:
 ; Because the jerk-offs who wrote the multiboot standard are WAAAY behind in
 ; the game.
 ;
@@ -11,6 +12,7 @@
 ;
 ; FIXME: This makes the assumption that all the multiboot data structures are
 ; in the lower 2MB of ram.
+; /
 ;------------------------------------------------------------------------------
 
 
@@ -22,9 +24,21 @@
 
 
 ;------------------------------------------------------------------------------
-; code label StraponStart
+; function: StraponStart
 ;
-; entry point for the 32-bit to 64-bit stage
+; brief: Entry point for the 32-bit to 64-bit stage
+;
+; pass:
+; /
+;
+; return:
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
 ;------------------------------------------------------------------------------
 [extern StraponStart]
 

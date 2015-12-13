@@ -1,9 +1,11 @@
 ;------------------------------------------------------------------------------
-; module paging
+; module: Paging
 ;
-; Interface to the hardware paging mechanism
+; brief: Interface to the hardware paging mechanism
 ;
+; detail:
 ; This does not manage memory, see modules PMem and VMem
+; /
 ;------------------------------------------------------------------------------
 
 
@@ -15,26 +17,29 @@
 
 
 ;------------------------------------------------------------------------------
-; function PagingInit
+; function: PagingInit
 ;
-; Initializes hardware paging mechanism
+; brief: Initializes hardware paging mechanism
 ;
 ; pass:
-; none
+; /
 ;
 ; return:
-; none
+; /
 ;
-; notes:
-; none
+; sideeffects:
+; /
+;
+; detail:
+; /
 ;------------------------------------------------------------------------------
 [extern PagingInit]
 
 
 ;------------------------------------------------------------------------------
-; function PagingMap
+; function: PagingMap
 ;
-; Maps a virtual memory region to a physical region
+; brief: Maps a virtual memory region to a physical region
 ;
 ; pass:
 ;	-> pml4t
@@ -42,31 +47,40 @@
 ;	= physical address
 ;	= region size
 ;	= options (cache/protection)
+; /
 ;
 ; return:
 ; cf	= set if mapping overlaps existing region, clear on success
+; /
 ;
-; notes:
-; none
+; sideeffects:
+; /
+;
+; detail:
+; /
 ;------------------------------------------------------------------------------
 [extern PagingMap]
 
 
 ;------------------------------------------------------------------------------
-; function PagingUnmap
+; function: PagingUnmap
 ;
-; Removes a virtual->physical memory mapped region
+; brief: Removes a virtual->physical memory mapped region
 ;
 ; pass:
 ;	-> pml4t
 ;	= virtual address
 ;	= region size
+; /
 ;
 ; return:
-; none
+; /
 ;
-; notes:
-; none
+; sideeffects:
+; /
+;
+; detail:
+; /
 ;------------------------------------------------------------------------------
 [extern PagingUnmap]
 

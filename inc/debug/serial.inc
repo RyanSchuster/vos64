@@ -1,7 +1,10 @@
 ;------------------------------------------------------------------------------
-; module serial
+; module: Serial
 ;
-; Serial port output for out-of-band debugging
+; brief: Serial port output for out-of-band debugging
+;
+; detail:
+; /
 ;------------------------------------------------------------------------------
 
 
@@ -13,61 +16,64 @@
 
 
 ;------------------------------------------------------------------------------
-; function SerialInit
+; function: SerialInit
 ;
-; Sets up the serial port for output
+; brief: Sets up the serial port for output
 ;
 ; pass:
-; none
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
+; detail:
 ; TODO: Document port setup (baud/parity/etc.)
+; /
 ;------------------------------------------------------------------------------
 [extern SerialInit]
 
 
 ;------------------------------------------------------------------------------
-; function SerialPutChar
+; function: SerialPutChar
 ;
-; Writes a character to the serial port, handling special characters
+; brief: Writes a character to the serial port, handling special characters
 ;
 ; pass:
 ; al	= character to write
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
+; detail:
 ; Handles CR, LF, and TAB
+; /
 ;------------------------------------------------------------------------------
 [extern SerialPutChar]
 
 
 ;------------------------------------------------------------------------------
-; function SerialClrScr
+; function: SerialClrScr
 ;
-; Records that a screen clear happened
+; brief: Records that a screen clear happened
 ;
 ; pass:
-; none
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes
-; none
+; detail:
+; /
 ;------------------------------------------------------------------------------
 [extern SerialClrScr]
 

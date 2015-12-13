@@ -1,9 +1,12 @@
 ;------------------------------------------------------------------------------
-; module debug
+; module: Debug
 ;
-; useful routines for debugging
+; brief: Useful routines for debugging
 ;
-; can print out to the console or the serial port
+; detail:
+; Can print out to the console or the serial port if DEBUG_CONSOLE and
+; DEBUG_SERIAL macros are set to 1, respectively.
+; /
 ;------------------------------------------------------------------------------
 
 
@@ -15,214 +18,373 @@
 
 
 ;------------------------------------------------------------------------------
-; function DebugInit
+; function: DebugInit
 ;
-; Sets up debug printing (console/serial) and sets up the breakpoint handler
+; brief: Sets up debug printing and sets up the breakpoint handler
 ;
 ; pass:
-; none
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
+; detail:
 ; TODO: Set up breakpoint handler
+; /
 ;------------------------------------------------------------------------------
 [extern DebugInit]
 
 
 ;------------------------------------------------------------------------------
-; function DebugPrint
+; function: DebugPrint
 ;
-; Prints a null-terminated string, handling special chars
+; brief: Prints a null-terminated string, handling special chars
 ;
 ; pass:
 ; rsi	-> null-terminated string
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
-; none
+; detail:
+; /
 ;------------------------------------------------------------------------------
 [extern DebugPrint]
 
 
 ;------------------------------------------------------------------------------
-; function DebugNewLine
+; function: DebugNewLine
 ;
-; Puts the cursor on the next line
+; brief: Puts the cursor on the next line
 ;
 ; pass:
-; none
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
-; none
+; detail:
+; /
 ;------------------------------------------------------------------------------
 [extern DebugNewLine]
 
 
 ;------------------------------------------------------------------------------
-; function DebugClrScr
+; function: DebugClrScr
 ;
-; Clears the screen and resets the cursor (if using console debugging)
+; brief: Clears the screen and resets the cursor (if using console debugging)
 ;
 ; pass:
-; none
+; /
 ;
 ; return:
-; none
+; /
 ;
 ; side effects:
-; none
+; /
 ;
-; notes:
-; none
+; detail:
+; /
 ;------------------------------------------------------------------------------
 [extern DebugClrScr]
 
 
 ;------------------------------------------------------------------------------
-; function DebugPutChar
+; function: DebugPutChar
 ;
-; Prints a character, handling special characters
+; brief: Prints a character, handling special characters
 ;
 ; pass:
 ; al	= character to print
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
+; detail:
 ; Handles CR, LF, and TAB
+; /
 ;------------------------------------------------------------------------------
 [extern DebugPutChar]
 
 
 ;------------------------------------------------------------------------------
-; function DebugPutRaw
+; function: DebugPutRaw
 ;
-; Prints a character, not handling special characters
+; brief: Prints a character, not handling special characters
 ;
 ; pass:
 ; al	= character to print
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
+; detail:
 ; Nonprintable characters are displayed as '.'
+; /
 ;------------------------------------------------------------------------------
 [extern DebugPutRaw]
 
 
 ;------------------------------------------------------------------------------
-; function DebugPrint[Hex|Bin][B|W|D|Q]
+; function: DebugPrintHexB
 ;
-; Prints a byte/word/dword/qword in hex/binary
+; brief: Prints a (8-bit) byte in hex
 ;
 ; pass:
-; rax	= number to print
+; dl	= number to print
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
-; none
+; detail:
+; /
 ;------------------------------------------------------------------------------
 [extern DebugPrintHexB]
+
+
+;------------------------------------------------------------------------------
+; function: DebugPrintHexW
+;
+; brief: Prints a (16-bit) word in hex
+;
+; pass:
+; dx	= number to print
+; /
+;
+; return:
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
 [extern DebugPrintHexW]
+
+
+;------------------------------------------------------------------------------
+; function: DebugPrintHexD
+;
+; brief: Prints a (32-bit) dword in hex
+;
+; pass:
+; edx	= number to print
+; /
+;
+; return:
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
 [extern DebugPrintHexD]
+
+
+;------------------------------------------------------------------------------
+; function: DebugPrintHexQ
+;
+; brief: Prints a (64-bit) qword in hex
+;
+; pass:
+; rdx	= number to print
+; /
+;
+; return:
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
 [extern DebugPrintHexQ]
+
+
+;------------------------------------------------------------------------------
+; function: DebugPrintBinB
+;
+; brief: Prints a (8-bit) byte in binary
+;
+; pass:
+; dl	= number to print
+; /
+;
+; return:
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
 [extern DebugPrintBinB]
+
+
+;------------------------------------------------------------------------------
+; function: DebugPrintBinW
+;
+; brief: Prints a (16-bit) word in binary
+;
+; pass:
+; dx	= number to print
+; /
+;
+; return:
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
 [extern DebugPrintBinW]
+
+
+;------------------------------------------------------------------------------
+; function: DebugPrintBinD
+;
+; brief: Prints a (32-bit) dword in binary
+;
+; pass:
+; edx	= number to print
+; /
+;
+; return:
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
 [extern DebugPrintBinD]
+
+
+;------------------------------------------------------------------------------
+; function: DebugPrintBinQ
+;
+; brief: Prints a (64-bit) qword in binary
+;
+; pass:
+; rdx	= number to print
+; /
+;
+; return:
+; /
+;
+; sideeffects:
+; /
+;
+; detail:
+; /
+;------------------------------------------------------------------------------
 [extern DebugPrintBinQ]
 
 
 ;------------------------------------------------------------------------------
-; function DebugCoreDump
+; function: DebugCoreDump
 ;
-; Dumps a block of memory to the screen in hex/ascii
+; brief: Dumps a block of memory to the screen in hex/ascii
 ;
 ; pass:
 ; rdi	-> memory to dump
 ; rcx	= number of 16-byte blocks to dump
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
+; detail:
 ; output looks like this:
-; xxxxxxxxxxxxxxxx yy yy yy (. . .) yy zzz...z
+;
+; `xxxxxxxxxxxxxxxx yy yy yy (. . .) yy zzz...z`
 ;
 ; x - address
+;
 ; y - hex data
+;
 ; z - ascii data
 ;
 ; FIXME: will crash if address is bad
+; /
 ;------------------------------------------------------------------------------
 [extern DebugCoreDump]
 
 
 ;------------------------------------------------------------------------------
-; function DebugMotherfuck
+; function: DebugMotherfuck
 ;
-; I AM A MOTHERFUCKER
+; brief: I AM A MOTHERFUCKER
 ;
 ; pass:
-; none
+; /
 ;
 ; return:
-; none
+; /
 ;
-; side effects:
-; none
+; sideeffects:
+; /
 ;
-; notes:
+; detail:
 ; This is a valuable debugging routine.
+; /
 ;------------------------------------------------------------------------------
 [extern DebugMotherfuck]
 
 
 ;------------------------------------------------------------------------------
-; function DebugRegComp
+; function: DebugRegComp
 ;
-; Compares two register snapshots
+; brief: Compares two register snapshots
 ;
 ; pass:
 ; r14	-> pre snapshot
 ; r15	-> post snapshot
+; /
 ;
 ; return:
 ; cf	= set if mismatch, clear if match
+; /
 ;
-; notes:
+; sideeffects:
+; /
+;
+; detail:
 ; For comparing registers before/after function calls for regression tests
+; /
 ;------------------------------------------------------------------------------
 [extern DebugRegComp]
 
