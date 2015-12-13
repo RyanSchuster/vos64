@@ -110,9 +110,3 @@ review :
 dox :
 	scripts/ScanTree.py
 	dot -Tpng scripts/doc/callgraph.dot -o scripts/doc/vos64.wiki/callgraph.png
-	cd scripts/doc/vos64.wiki
-	git add -A
-	git commit -m "AutoDox update to wiki"
-	git pull
-	git push
-	cd ../../..

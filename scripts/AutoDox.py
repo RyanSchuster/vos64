@@ -532,7 +532,7 @@ class TreeScanner:
 		# Force a dependency for calls that don't use the call instruction
 		if self.state == self.STATE_CODE:
 			words = comment.split()
-			if len(words) >= 2 and words[0] == 'calls: ':
+			if len(words) >= 2 and words[0] == 'calls:':
 				functions[self.funcname].AddCallee(words[1])
 				functions[words[1]].AddCaller(self.funcname)
 

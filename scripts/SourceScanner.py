@@ -55,7 +55,8 @@ class SourceScanner:
 			labelEnd = 0
 
 		label = line[:labelEnd].lstrip().rstrip()
-		if label.find('"') >= 0 or label.find("'") >= 0:
+		# Try to rule out any accidental code
+		if ('"' in label) or ("'" in label) or ('\t' in label) or (' ' in label):
 			label = ''
 		code = line[labelEnd:commentStart].lstrip().rstrip()
 		comment = line[commentStart + 1:].lstrip().rstrip()
