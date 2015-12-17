@@ -1,5 +1,5 @@
-%ifndef __DEFS_COMMON_H__
-%define __DEFS_COMMON_H__
+%ifndef __COMMON_INC__
+%define __COMMON_INC__
 
 
 ;------------------------------------------------------------------------------
@@ -27,4 +27,4 @@
 ;%define TEST_BITMAP
 
 
-%endif ;__DEFS_COMMON_H__
+%endif ;__COMMON_INC__

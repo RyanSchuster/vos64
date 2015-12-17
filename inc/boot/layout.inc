@@ -1,5 +1,5 @@
-%ifndef __DEFS_LAYOUT_H__
-%define __DEFS_LAYOUT_H__
+%ifndef __LAYOUT_INC__
+%define __LAYOUT_INC__
 
 
 %ifndef MOD_LAYOUT
@@ -46,4 +46,4 @@
 %define STATIC_V_TO_P(addr)	((addr) - REMAP_OFFSET)
 
 
-%endif ;__DEFS_LAYOUT_H__
+%endif ;__LAYOUT_INC__

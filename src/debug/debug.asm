@@ -7,7 +7,7 @@
 %include "debug/console.inc"
 %include "debug/serial.inc"
 
-%include "defs.inc"
+%include "defs/common.inc"
 
 
 

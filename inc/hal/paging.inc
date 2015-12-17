@@ -9,8 +9,8 @@
 ;------------------------------------------------------------------------------
 
 
-%ifndef __PAGING_H__
-%define __PAGING_H__
+%ifndef __PAGING_INC__
+%define __PAGING_INC__
 
 
 %ifndef MOD_PAGING
@@ -88,4 +88,4 @@
 %endif ;MOD_PAGING
 
 
-%endif ;__PAGING_H__
+%endif ;__PAGING_INC__

@@ -2,14 +2,14 @@
 ; module: Strapon
 
 
-%include "strapon/strapon.inc"
+%include "boot/strapon.inc"
 
-%include "layout.inc"
-%include "multiboot.inc"
-%include "paging.inc"
-%include "creg.inc"
-%include "msr.inc"
-%include "gdt.inc"
+%include "boot/layout.inc"
+%include "defs/multiboot.inc"
+%include "defs/paging.inc"
+%include "defs/creg.inc"
+%include "defs/msr.inc"
+%include "defs/gdt.inc"
 
 
 

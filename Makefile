@@ -1,5 +1,4 @@
-FILES =	layout entry \
-	strapon/strapon \
+FILES =	boot/layout boot/entry boot/strapon \
 	debug/debug debug/console debug/serial \
 	lib/bitmap
 #	hal/pmem
@@ -11,10 +10,10 @@ SOURCES = $(FILES:%=$(SRCDIR)/%.asm)
 
 SRCDIR = ./src
 INCDIR = ./inc
-OBJDIR = ./obj
 BINDIR = ./bin
+OBJDIR = $(BINDIR)/obj
 MEDIADIR = ./media
-DOCDIR = ./doc
+DOCDIR = ./scripts/doc
 
 AS = yasm
 LINK = ld
@@ -31,30 +30,24 @@ $(BINARY) : $(OBJECTS) $(LINKSCRIPT)
 # Individual object files
 
 
-# Static memory map symbols
+# Entry point and static memory map
 
-$(OBJDIR)/layout.o : $(SRCDIR)/layout.asm $(INCDIR)/layout.inc
+$(OBJDIR)/boot/layout.o : $(SRCDIR)/boot/layout.asm $(INCDIR)/boot/layout.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
-
-# Entry point for kernel-proper
-
-$(OBJDIR)/entry.o : $(SRCDIR)/entry.asm
+$(OBJDIR)/boot/entry.o : $(SRCDIR)/boot/entry.asm
 	$(AS) $(ASFLAGS) -o $@ $<
 
-
-# Strapon bootloader stage
-
-$(OBJDIR)/strapon/strapon.o : $(SRCDIR)/strapon/strapon.asm $(INCDIR)/strapon/strapon.inc $(INCDIR)/layout.inc $(INCDIR)/multiboot.inc $(INCDIR)/paging.inc $(INCDIR)/creg.inc $(INCDIR)/msr.inc $(INCDIR)/gdt.inc
+$(OBJDIR)/boot/strapon.o : $(SRCDIR)/boot/strapon.asm $(INCDIR)/boot/strapon.inc $(INCDIR)/boot/layout.inc $(INCDIR)/defs/multiboot.inc $(INCDIR)/defs/paging.inc $(INCDIR)/defs/creg.inc $(INCDIR)/defs/msr.inc $(INCDIR)/defs/gdt.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
 
 # Debugging routines
 
-$(OBJDIR)/debug/debug.o : $(SRCDIR)/debug/debug.asm $(INCDIR)/debug/debug.inc $(INCDIR)/debug/console.inc $(INCDIR)/debug/serial.inc $(INCDIR)/defs.inc
+$(OBJDIR)/debug/debug.o : $(SRCDIR)/debug/debug.asm $(INCDIR)/debug/debug.inc $(INCDIR)/debug/console.inc $(INCDIR)/debug/serial.inc $(INCDIR)/defs/common.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
-$(OBJDIR)/debug/console.o : $(SRCDIR)/debug/console.asm $(INCDIR)/debug/console.inc $(INCDIR)/defs.inc
+$(OBJDIR)/debug/console.o : $(SRCDIR)/debug/console.asm $(INCDIR)/debug/console.inc $(INCDIR)/defs/common.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
 $(OBJDIR)/debug/serial.o : $(SRCDIR)/debug/serial.asm $(INCDIR)/debug/serial.inc
@@ -69,7 +62,7 @@ $(OBJDIR)/lib/bitmap.o : $(SRCDIR)/lib/bitmap.asm $(INCDIR)/lib/bitmap.inc
 
 # Hardware Abstraction Layer
 
-obj/hal/pmem.o : $(SRCDIR)/hal/pmem.asm $(INCDIR)/hal/pmem.inc
+$(OBJDIR)/hal/pmem.o : $(SRCDIR)/hal/pmem.asm $(INCDIR)/hal/pmem.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
 
@@ -102,9 +95,9 @@ $(MEDIADIR)/cd/vos_boot_cd.iso : $(BINARY) $(GRUB2DIR)/*
 
 # Review code and generate documentation
 
-.PHONY : review
-review :
-	python review.py
+#.PHONY : review
+#review :
+#	python review.py
 
 .PHONY : dox
 dox :

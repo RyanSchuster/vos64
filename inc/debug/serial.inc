@@ -8,8 +8,8 @@
 ;------------------------------------------------------------------------------
 
 
-%ifndef __SERIAL_H__
-%define __SERIAL_H__
+%ifndef __SERIAL_INC__
+%define __SERIAL_INC__
 
 
 %ifndef MOD_SERIAL
@@ -81,4 +81,4 @@
 %endif ;MOD_SERIAL
 
 
-%endif ;__SERIAL_H__
+%endif ;__SERIAL_INC__

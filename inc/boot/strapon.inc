@@ -16,8 +16,8 @@
 ;------------------------------------------------------------------------------
 
 
-%ifndef __STRAPON_H__
-%define __STRAPON_H__
+%ifndef __STRAPON_INC__
+%define __STRAPON_INC__
 
 
 %ifndef MOD_STRAPON
@@ -49,4 +49,4 @@
 %endif ;MOD_STRAPON
 
 
-%endif ;__STRAPON_H__
+%endif ;__STRAPON_INC__

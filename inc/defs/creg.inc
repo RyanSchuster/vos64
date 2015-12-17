@@ -1,5 +1,5 @@
-%ifndef __DEFS_CREG_H__
-%define __DEFS_CREG_H__
+%ifndef __CREG_INC__
+%define __CREG_INC__
 
 
 %define CR0_PE		0x00000001	;protected mode enable
@@ -34,4 +34,4 @@
 %define CR4_SMAP	0X00200000	;enable supervisor mode access protection
 
 
-%endif ;__DEFS_CREG_H__
+%endif ;__CREG_INC__

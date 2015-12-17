@@ -4,7 +4,7 @@
 
 %include "lib/bitmap.inc"
 
-%include "defs.inc"
+%include "defs/common.inc"
 
 %ifdef TEST_BITMAP
 %include "debug/debug.inc"

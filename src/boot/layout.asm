@@ -2,7 +2,7 @@
 ; module: Layout
 
 
-%include "layout.inc"
+%include "boot/layout.inc"
 
 
 

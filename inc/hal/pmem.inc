@@ -8,8 +8,8 @@
 ;------------------------------------------------------------------------------
 
 
-%ifndef __PMEM_H__
-%define __PMEM_H__
+%ifndef __PMEM_INC__
+%define __PMEM_INC__
 
 
 %ifndef MOD_PMEM
@@ -214,4 +214,4 @@
 %endif ;MOD_PMEM
 
 
-%endif ;__PMEM_H__
+%endif ;__PMEM_INC__

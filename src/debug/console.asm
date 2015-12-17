@@ -4,7 +4,7 @@
 
 %include "debug/console.inc"
 
-%include "defs.inc"
+%include "defs/common.inc"
 
 
 ;------------------------------------------------------------------------------

@@ -8,8 +8,8 @@
 ;------------------------------------------------------------------------------
 
 
-%ifndef __BITMAP_H__
-%define __BITMAP_H__
+%ifndef __BITMAP_INC__
+%define __BITMAP_INC__
 
 
 %ifndef MOD_BITMAP
@@ -191,4 +191,4 @@
 %endif ;MOD_BITMAP
 
 
-%endif ;__BITMAP_H__
+%endif ;__BITMAP_INC__

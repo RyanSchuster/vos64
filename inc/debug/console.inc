@@ -10,8 +10,8 @@
 ;------------------------------------------------------------------------------
 
 
-%ifndef __CONSOLE_H__
-%define __CONSOLE_H__
+%ifndef __CONSOLE_INC__
+%define __CONSOLE_INC__
 
 
 %ifndef MOD_CONSOLE
@@ -82,4 +82,4 @@
 %endif ;MOD_CONSOLE
 
 
-%endif ;__CONSOLE_H__
+%endif ;__CONSOLE_INC__

@@ -10,8 +10,8 @@
 ;------------------------------------------------------------------------------
 
 
-%ifndef __DEBUG_H__
-%define __DEBUG_H__
+%ifndef __DEBUG_INC__
+%define __DEBUG_INC__
 
 
 %ifndef MOD_DEBUG
@@ -484,4 +484,4 @@ endstruc
 %endmacro
 
 
-%endif ;__DEBUG_H__
+%endif ;__DEBUG_INC__

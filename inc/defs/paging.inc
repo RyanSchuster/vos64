@@ -1,5 +1,5 @@
-%ifndef __DEFS_PAGING_H__
-%define __DEFS_PAGING_H__
+%ifndef __PAGING_INC__
+%define __PAGING_INC__
 
 
 ;Paging structure entry bitfields
@@ -42,4 +42,4 @@
 %define STATIC_PT_INDEX(addr)	((addr & VADDR_PT_INDEX_MASK) >> VADDR_PT_INDEX_SHIFT)
 
 
-%endif ;__DEFS_PAGING_H__
+%endif ;__PAGING_INC__

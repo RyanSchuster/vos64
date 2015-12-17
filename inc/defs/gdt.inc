@@ -1,5 +1,5 @@
-%ifndef __DEFS_GDT_H__
-%define __DEFS_GDT_H__
+%ifndef __GDT_INC__
+%define __GDT_INC__
 
 
 struc gdte_t
@@ -17,4 +17,4 @@ endstruc
 %define GDTE_DATA_CPL0		0x0000900000000000
 
 
-%endif ;__DEFS_GDT_H__
+%endif ;__GDT_INC__

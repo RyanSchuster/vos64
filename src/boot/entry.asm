@@ -2,8 +2,8 @@
 ; module: Entry
 
 
-%include "defs.inc"
-%include "layout.inc"
+%include "defs/common.inc"
+%include "boot/layout.inc"
 %include "debug/debug.inc"
 
 %include "hal/pmem.inc"

@@ -1,5 +1,5 @@
-%ifndef __DEFS_MSR_H__
-%define __DEFS_MSR_H__
+%ifndef __MSR_INC__
+%define __MSR_INC__
 
 
 %define MSR_EFER	0xC0000080
@@ -14,4 +14,4 @@
 %define EFER_TCE	0x00008000	;translation cache extension
 
 
-%endif ;__DEFS_MSR_H__
+%endif ;__MSR_INC__

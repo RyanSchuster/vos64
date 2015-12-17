@@ -1,5 +1,5 @@
-%ifndef __DEFS_MULTIBOOT_H__
-%define __DEFS_MULTIBOOT_H__
+%ifndef __MULTIBOOT_INC__
+%define __MULTIBOOT_INC__
 
 
 ;------------------------------------------------------------------------------
@@ -102,4 +102,4 @@ endstruc
 %define TYPE_ACPI_NVS			0x04
 
 
-%endif ;__DEFS_MULTIBOOT_H__
+%endif ;__MULTIBOOT_INC__

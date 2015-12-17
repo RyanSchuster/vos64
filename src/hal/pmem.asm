@@ -5,7 +5,7 @@
 %include "hal/pmem.inc"
 
 %include "lib/bitmap.inc"
-%include "multiboot.inc"
+%include "defs/multiboot.inc"
 
 %include "debug/debug.inc"
 
