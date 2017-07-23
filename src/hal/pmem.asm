@@ -102,10 +102,10 @@ PMemInit:
 
 .mapNext:
 	; Keep track of the high watermark
-	;mov	rbx, [rax + mmap_entry_t.base_addr]
-	;add	rbx, [rax + mmap_entry_t.length]
-	;cmp	rbx, rdx
-	;cmova	rdx, rbx
+	; mov	rbx, [rax + mmap_entry_t.base_addr]
+	; add	rbx, [rax + mmap_entry_t.length]
+	; cmp	rbx, rdx
+	; cmova	rdx, rbx
 
 	; Next map region
 	add	eax, [rax + mmap_entry_t.size]
@@ -113,8 +113,8 @@ PMemInit:
 	cmp	rax, rcx
 	jb	.mapLoop
 
-	;PRINT	"Memory high watermark:"
-	;PRINTQ	rdx
+	; PRINT	"Memory high watermark:"
+	; PRINTQ	rdx
 
 	ret
 
@@ -233,7 +233,7 @@ PMemSetSupermap:
 	ret
 
 
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; function: PMemFindRegion
 ;
 ; brief: Finds a region?
@@ -253,7 +253,7 @@ PMemSetSupermap:
 ;
 ; detail:
 ; /
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 PMemFindRegion:
 	; TODO: scan through list of regions
 	; this is here as a placeholder for now so the hooks are in place

@@ -9,7 +9,7 @@ OBJECTS = $(FILES:%=$(OBJDIR)/%.o)
 SOURCES = $(FILES:%=$(SRCDIR)/%.asm)
 
 SRCDIR = ./src
-INCDIR = ./inc
+INCDIR = ./src
 BINDIR = ./bin
 OBJDIR = $(BINDIR)/obj
 MEDIADIR = ./media
@@ -38,7 +38,7 @@ $(OBJDIR)/boot/layout.o : $(SRCDIR)/boot/layout.asm $(INCDIR)/boot/layout.inc
 $(OBJDIR)/boot/entry.o : $(SRCDIR)/boot/entry.asm
 	$(AS) $(ASFLAGS) -o $@ $<
 
-$(OBJDIR)/boot/strapon.o : $(SRCDIR)/boot/strapon.asm $(INCDIR)/boot/strapon.inc $(INCDIR)/boot/layout.inc $(INCDIR)/defs/multiboot.inc $(INCDIR)/defs/paging.inc $(INCDIR)/defs/creg.inc $(INCDIR)/defs/msr.inc $(INCDIR)/defs/gdt.inc
+$(OBJDIR)/boot/strapon.o : $(SRCDIR)/boot/strapon.asm $(INCDIR)/boot/strapon.inc $(INCDIR)/boot/layout.inc $(INCDIR)/defs/multiboot.inc $(INCDIR)/defs/pagetab.inc $(INCDIR)/defs/creg.inc $(INCDIR)/defs/msr.inc $(INCDIR)/defs/gdt.inc
 	$(AS) $(ASFLAGS) -o $@ $<
 
 
@@ -95,11 +95,10 @@ $(MEDIADIR)/cd/vos_boot_cd.iso : $(BINARY) $(GRUB2DIR)/*
 
 # Review code and generate documentation
 
-#.PHONY : review
-#review :
-#	python review.py
+.PHONY : review
+review :
+	tools/style.py
 
 .PHONY : dox
 dox :
-	scripts/ScanTree.py
-	dot -Tpng scripts/doc/callgraph.dot -o scripts/doc/vos64.wiki/callgraph.png
+	tools/dox.py

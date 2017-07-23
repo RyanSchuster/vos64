@@ -8,7 +8,7 @@
 
 %ifdef TEST_BITMAP
 %include "debug/debug.inc"
-%endif ;TEST_BITMAP
+%endif ; TEST_BITMAP
 
 
 
@@ -352,7 +352,7 @@ BitmapRangeFind:
 
 %ifdef TEST_BITMAP
 
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; function: BitmapPrint
 ;
 ; brief: Prints bitmap contents for debugging
@@ -368,7 +368,7 @@ BitmapRangeFind:
 ;
 ; detail:
 ; /
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 BitmapPrint:
 	PRINT	"Bitmap contents:"
 	xor	rax, rax
@@ -387,7 +387,7 @@ BitmapTest:
 	mov	r14, preSnap
 	mov	r15, postSnap
 
-	;----------------------------------------------------------------------
+	;-----------------------------------------------------------------------
 	; BitmapBitSet
 
 	; ----- Set first bit of first qword
@@ -467,7 +467,7 @@ BitmapTest:
 	; TODO: Try to set bit outside bitmap bounds
 
 
-	;----------------------------------------------------------------------
+	;-----------------------------------------------------------------------
 	; BitmapBitClear
 
 	; ----- Clear first bit of first qword
@@ -527,7 +527,7 @@ BitmapTest:
 	; TODO: test out of bounds
 
 
-	;----------------------------------------------------------------------
+	;-----------------------------------------------------------------------
 	; BitmapBitFind
 
 	; find in first qword with later bits free
@@ -605,7 +605,7 @@ BitmapTest:
 .test9Done:
 
 
-	;----------------------------------------------------------------------
+	;-----------------------------------------------------------------------
 	; BitmapRangeSet
 
 	; start at beginning of first qword
@@ -736,7 +736,7 @@ BitmapTest:
 .test13Done:
 
 
-	;----------------------------------------------------------------------
+	;-----------------------------------------------------------------------
 	; BitmapRangeClear
 
 	; start at beginning of qword
@@ -835,7 +835,7 @@ BitmapTest:
 .test17Done:
 
 
-	;----------------------------------------------------------------------
+	;-----------------------------------------------------------------------
 	; BitmapRangeFind
 
 	; find at beginning of first qword
@@ -1015,7 +1015,7 @@ BitmapTest:
 	call	BitmapPrint
 	ret
 
-%endif ;TEST_BITMAP
+%endif ; TEST_BITMAP
 
 
 
@@ -1024,7 +1024,7 @@ BitmapTest:
 
 %ifdef TEST_BITMAP
 
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Test bitmaps
 
 testmap1:
@@ -1075,7 +1075,7 @@ testmap8:
 	dq	0x0000000000000000	; outside bitmap
 
 
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Output strings
 
 bitSetFirstQFirstB:
@@ -1084,7 +1084,7 @@ bitSetLastQLastB:
 	db	"Set last bit of last qword", CHAR_CR, CHAR_LF, CHAR_NUL
 bitSetMidQMidB:
 	db	"Set middle bit of middle qword", CHAR_CR, CHAR_LF, CHAR_NUL
-	
+
 testFail:
 	db	"FAILED", CHAR_CR, CHAR_LF, CHAR_NUL
 testPass:
@@ -1096,7 +1096,7 @@ bitmapStr:
 	db	"Bitmap contents:", CHAR_CR, CHAR_LF, CHAR_NUL
 
 
-%endif ;TEST_BITMAP
+%endif ; TEST_BITMAP
 
 
 
@@ -1111,4 +1111,4 @@ preSnap:
 postSnap:
 	resb	debug_snap_t_size
 
-%endif ;TEST_BITMAP
+%endif ; TEST_BITMAP

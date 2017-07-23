@@ -8,7 +8,7 @@ struc gdte_t
 			resd 1
 	.flags0:	resb 1
 	.flags1:	resb 1
-			resb 1	
+			resb 1
 endstruc
 
 
@@ -17,4 +17,4 @@ endstruc
 %define GDTE_DATA_CPL0		0x0000900000000000
 
 
-%endif ;__GDT_INC__
+%endif ; __GDT_INC__

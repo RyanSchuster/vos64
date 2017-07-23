@@ -10,14 +10,14 @@
 
 %ifdef TEST_BITMAP
 %include "lib/bitmap.inc"
-%endif ;TEST_BITMAP
+%endif ; TEST_BITMAP
 
 
 
 [section .text]
 [bits 64]
 
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; function: Entry
 ;
 ; brief: Entry point for the kernel proper
@@ -34,7 +34,7 @@
 ;
 ; detail:
 ; /
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 [global Entry]
 Entry:
 	mov	rsp, stack
@@ -42,15 +42,15 @@ Entry:
 	call	DebugInit
 
 %ifdef TEST_BITMAP
-	;call	BitmapTest
+	; call	BitmapTest
 	cli
 	hlt
 %endif
 
-	;call	PMemInit
-	;loadAddrBegin
-	;loadAddrEnd
-	;loadSize
+	call	PMemInit
+	; loadAddrBegin
+	; loadAddrEnd
+	; loadSize
 
 	PRINTQ	kernSize
 
@@ -63,7 +63,8 @@ Entry:
 
 
 message:
-	db	"There is no chin under Mr. Vos's beard.  Only another beard.", CHAR_CR, CHAR_LF, CHAR_NUL
+	db	"There is no chin under Mr. Vos's beard.  Only another beard."
+	db	CHAR_CR, CHAR_LF, CHAR_NUL
 
 
 

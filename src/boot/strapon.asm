@@ -6,7 +6,7 @@
 
 %include "boot/layout.inc"
 %include "defs/multiboot.inc"
-%include "defs/paging.inc"
+%include "defs/pagetab.inc"
 %include "defs/creg.inc"
 %include "defs/msr.inc"
 %include "defs/gdt.inc"
@@ -44,7 +44,7 @@ StraponEntry:
 	xor	eax, eax
 	rep	stosd
 
-	;----- Identity map the 2MB pageframe where the strapon is loaded
+	; ----- Identity map the 2MB pageframe where the strapon is loaded
 
 	push	STRAPON_ADDR & 0xFFFFFFFF
 	push	STRAPON_ADDR >> 32
@@ -53,7 +53,7 @@ StraponEntry:
 	call	StraponMapPage
 	add	esp, 4 * 4
 
-	;----- Higher-half map pages where the kernel is loaded
+	; ----- Higher-half map pages where the kernel is loaded
 
 	mov	ecx, kernSize
 	add	ecx, 0x001FFFFF
@@ -69,9 +69,9 @@ StraponEntry:
 
 	loop	.kernPageLoop
 
-	
 
-	;----- Get into long mode
+
+	; ----- Get into long mode
 
 	; Enable long mode
 	mov	ecx, MSR_EFER
@@ -93,7 +93,7 @@ StraponEntry:
 	or	eax, CR0_PG
 	mov	cr0, eax
 
-	;----- Get into a 64-bit code segment
+	; ----- Get into a 64-bit code segment
 
 	lgdt	[gdtp]
 	jmp	0x0008:.realm64
@@ -130,7 +130,7 @@ StraponEntry:
 	[bits 32]
 
 
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; function: StraponAlloc4K
 ;
 ; brief: Allocates aligned block of 4KB from the strapon's watermark allocator
@@ -152,7 +152,7 @@ StraponEntry:
 ;
 ; Does no error checking - it's like memory management Lord of the Flies
 ; /
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 [bits 32]
 StraponAlloc4K:
 	mov	eax, [watermark]
@@ -162,7 +162,7 @@ StraponAlloc4K:
 	ret
 
 
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; function: StraponMapPage
 ;
 ; brief: Maps a 2M pageframe into virtual memory
@@ -189,7 +189,7 @@ StraponAlloc4K:
 ;
 ; Does no sanity or error checking - it's basically Thunderdome in there
 ; /
-;------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 %define VIRT_HI		(ebp + 0x08)
 %define VIRT_LO		(ebp + 0x0C)
 %define PHYS_HI		(ebp + 0x10)
@@ -204,11 +204,11 @@ StraponMapPage:
 	push	ecx
 	push	edx
 
-	;----- Grab a pointer to the PML4
+	; ----- Grab a pointer to the PML4
 
 	mov	ebx, pml4t
 
-	;----- Grab a pointer to the PDPT
+	; ----- Grab a pointer to the PDPT
 
 	; Get the index into the PML4T
 	mov	ecx, [VIRT_HI]
@@ -228,7 +228,7 @@ StraponMapPage:
 	and	eax, ENTRY_MASK_PHYS_4K & 0xFFFFFFFF
 	mov	ebx, eax
 
-	;----- Grab a pointer to the PDT
+	; ----- Grab a pointer to the PDT
 
 	; Get the index into the PDPT
 	mov	ecx, [VIRT_HI]
@@ -252,7 +252,7 @@ StraponMapPage:
 	and	eax, ENTRY_MASK_PHYS_4K & 0xFFFFFFFF
 	mov	ebx, eax
 
-	;----- Point the PDT entry at the 2M page
+	; ----- Point the PDT entry at the 2M page
 
 	; Get the index into the PDT
 	mov	ecx, [VIRT_LO]
@@ -274,53 +274,6 @@ StraponMapPage:
 	pop	eax
 	pop	ebp
 	ret
-
-
-;------------------------------------------------------------------------------
-; Ancient code for identity-mapping lower 2M and higher-half the second 2M
-; here for reference in case something breaks
-; TODO: delete this once it's been committed to a git repo
-
-	;----- Identity map the 2MB pageframe where the strapon is loaded
-
-	; The " & 0xFFFFFFFF"s are to supress warnings.  The upper dwords of
-	; addresses will always be 0s, so it's safe to ignore these bits.
-
-	; Point the pml4t entry at the pdpt
-	;mov	eax, pdptLow
-	;and	eax, ENTRY_MASK_PHYS_4K & 0xFFFFFFFF
-	;or	eax, ENTRY_PRESENT | ENTRY_WRITABLE
-	;mov	[pml4t + (STATIC_PML4_INDEX(STRAPON_ADDR) * 8)], eax
-
-	; Point the pdpt entry at the pdt
-	;mov	eax, pdtLow
-	;and	eax, ENTRY_MASK_PHYS_4K & 0xFFFFFFFF
-	;or	eax, ENTRY_PRESENT | ENTRY_WRITABLE
-	;mov	[pdptLow + (STATIC_PDPT_INDEX(STRAPON_ADDR) * 8)], eax
-
-	; Point the pdt entry at the large page
-	;mov	eax, (STRAPON_ADDR & ENTRY_MASK_PHYS_2M) | ENTRY_PRESENT | ENTRY_WRITABLE | ENTRY_PD_BIGPAGE
-	;mov	[pdtLow + (STATIC_PDT_INDEX(STRAPON_ADDR) * 8)], eax
-
-	;----- Higher-half map two MBs where the kernel is loaded
-
-	; Point the pml4t entry at the pdpt
-	;mov	eax, pdptHigh
-	;and 	eax, ENTRY_MASK_PHYS_4K & 0xFFFFFFFF
-	;or	eax, ENTRY_PRESENT | ENTRY_WRITABLE
-	;mov	[pml4t + (STATIC_PML4_INDEX(KERN_ADDR_VIRT) * 8)], eax
-
-	; Point the pdpt entry at the pdt
-	;mov	eax, pdtHigh
-	;and	eax, ENTRY_MASK_PHYS_4K & 0xFFFFFFFF
-	;or	eax, ENTRY_PRESENT | ENTRY_WRITABLE
-	;mov	[pdptHigh + (STATIC_PDPT_INDEX(KERN_ADDR_VIRT) * 8)], eax
-
-	; Point the pdt entry at the large page
-	;mov	eax, (KERN_ADDR_PHYS & ENTRY_MASK_PHYS_2M) | ENTRY_PRESENT | ENTRY_WRITABLE | ENTRY_PD_BIGPAGE
-	;mov	[pdtHigh + (STATIC_PDT_INDEX(KERN_ADDR_VIRT) * 8)], eax
-
-;------------------------------------------------------------------------------
 
 
 
