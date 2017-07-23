@@ -280,15 +280,21 @@ def page_function(f, code_map, func_name, func):
 	f.write('## Functions called by {}\n\n'.format(func_name))
 	filt = codemap.iscalledby(func)
 	for callee_name, callee in code_map.funcs_sorted(filt):
-		callee_link = link(callee_name, func_page_name(callee_name))
-		f.write('* {} - {}\n'.format(callee_link, callee.brief))
+		if callee.private:
+			f.write('* {} - {}\n'.format(callee_name, callee.brief))
+		else:
+			callee_link = link(callee_name, func_page_name(callee_name))
+			f.write('* {} - {}\n'.format(callee_link, callee.brief))
 	f.write('\n')
 
 	f.write('## Functions that call {}\n\n'.format(func_name))
 	filt = codemap.calls(func_name)
 	for caller_name, caller in code_map.funcs_sorted(filt):
-		caller_link = link(caller_name, func_page_name(caller_name))
-		f.write('* {} - {}\n'.format(caller_link, caller.brief))
+		if caller.private:
+			f.write('* {} - {}\n'.format(caller_name, caller.brief))
+		else:
+			caller_link = link(caller_name, func_page_name(caller_name))
+			f.write('* {} - {}\n'.format(caller_link, caller.brief))
 	f.write('\n')
 
 
